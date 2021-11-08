@@ -2,6 +2,7 @@
 Assessment of AE
 
 DETAILS OF THE ASSESSMENT 
+
 Graphical Programming Language Application
 This assignment is to use what you are learning in the module to produce a fairly complex 
 program. The idea of the program is to produce a simplified environment for teaching simple 
