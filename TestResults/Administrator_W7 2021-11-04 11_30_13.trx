@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<TestRun id="9b9a5b06-8075-40c2-8fd3-0d25c5e9fb99" name="Administrator@W7 2021-11-04 11:30:13" runUser="W7\Administrator" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <TestSettings name="Local" id="6267a7d8-8ce8-416b-b22c-5d151127fd5f">
+    <Description>These are default test settings for a local test run.</Description>
+    <Deployment enabled="false" runDeploymentRoot="Administrator_W7 2021-11-04 11_30_13">
+      <DeploymentItem filename="c:\users\administrator\documents\visual studio 2010\Projects\WpfApplication1\WpfApplication1\bin\Debug\WpfApplication1.exe" />
+    </Deployment>
+    <Execution>
+      <TestTypeSpecific />
+      <AgentRule name="Execution Agents">
+      </AgentRule>
+    </Execution>
+  </TestSettings>
+  <Times creation="2021-11-04T11:30:13.9406041-07:00" queuing="2021-11-04T11:30:13.9956572-07:00" start="2021-11-04T11:30:14.0136742-07:00" finish="2021-11-04T11:30:14.3469936-07:00" />
+  <ResultSummary outcome="Completed">
+    <Counters total="9" executed="9" passed="9" error="0" failed="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+  </ResultSummary>
+  <TestDefinitions>
+    <UnitTest name="TestCheckDrawTo" storage="c:\users\administrator\documents\visual studio 2010\projects\wpfapplication1\testproject1\bin\debug\testproject1.dll" id="ee7c3557-b853-6ee0-1b93-ff91de1cec02">
+      <Execution id="bd01c1b4-9c00-4f1d-b965-d5bbadb41e3e" />
+      <TestMethod codeBase="c:/users/administrator/documents/visual studio 2010/Projects/WpfApplication1/TestProject1/bin/Debug/TestProject1.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="TestProject1.UnitTest1, TestProject1, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="TestCheckDrawTo" />
+    </UnitTest>
+    <UnitTest name="TestCheckClear" storage="c:\users\administrator\documents\visual studio 2010\projects\wpfapplication1\testproject1\bin\debug\testproject1.dll" id="d5f6c96c-a288-f305-e0b6-f30feac4d3f9">
+      <Execution id="35c99c43-998f-4732-99cd-9434bf37d3e0" />
+      <TestMethod codeBase="c:/users/administrator/documents/visual studio 2010/Projects/WpfApplication1/TestProject1/bin/Debug/TestProject1.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="TestProject1.UnitTest1, TestProject1, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="TestCheckClear" />
+    </UnitTest>
+    <UnitTest name="TestCheckCircle" storage="c:\users\administrator\documents\visual studio 2010\projects\wpfapplication1\testproject1\bin\debug\testproject1.dll" id="ae11f443-4668-abaf-4550-b13abcbdaa9d">
+      <Execution id="06608f49-b461-4f9e-9df2-8a620d0cb83a" />
+      <TestMethod codeBase="c:/users/administrator/documents/visual studio 2010/Projects/WpfApplication1/TestProject1/bin/Debug/TestProject1.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="TestProject1.UnitTest1, TestProject1, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="TestCheckCircle" />
+    </UnitTest>
+    <UnitTest name="TestCheckPen" storage="c:\users\administrator\documents\visual studio 2010\projects\wpfapplication1\testproject1\bin\debug\testproject1.dll" id="ac5cc1d0-27ff-5d93-6160-f5188249b93e">
+      <Execution id="dddf9ae2-7cc2-4f40-8df1-26996581342d" />
+      <TestMethod codeBase="c:/users/administrator/documents/visual studio 2010/Projects/WpfApplication1/TestProject1/bin/Debug/TestProject1.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="TestProject1.UnitTest1, TestProject1, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="TestCheckPen" />
+    </UnitTest>
+    <UnitTest name="TestCheckRectangle" storage="c:\users\administrator\documents\visual studio 2010\projects\wpfapplication1\testproject1\bin\debug\testproject1.dll" id="f4577b5d-bd15-15e5-45a8-c23f6631885b">
+      <Execution id="2976cdc3-6192-4564-98df-ddcecffd7910" />
+      <TestMethod codeBase="c:/users/administrator/documents/visual studio 2010/Projects/WpfApplication1/TestProject1/bin/Debug/TestProject1.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="TestProject1.UnitTest1, TestProject1, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="TestCheckRectangle" />
+    </UnitTest>
+    <UnitTest name="TestCheckReset" storage="c:\users\administrator\documents\visual studio 2010\projects\wpfapplication1\testproject1\bin\debug\testproject1.dll" id="3dd36017-c1b6-6db9-1343-44e0a9729ff7">
+      <Execution id="d5f8d6bd-b8c3-4c87-abee-2ed565b56de8" />
+      <TestMethod codeBase="c:/users/administrator/documents/visual studio 2010/Projects/WpfApplication1/TestProject1/bin/Debug/TestProject1.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="TestProject1.UnitTest1, TestProject1, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="TestCheckReset" />
+    </UnitTest>
+    <UnitTest name="TestCheckMoveTo" storage="c:\users\administrator\documents\visual studio 2010\projects\wpfapplication1\testproject1\bin\debug\testproject1.dll" id="42685df2-5dab-5d15-22b3-4cd49b9a0162">
+      <Execution id="edfd8baf-83c1-4ad6-889a-60d5e8cfe603" />
+      <TestMethod codeBase="c:/users/administrator/documents/visual studio 2010/Projects/WpfApplication1/TestProject1/bin/Debug/TestProject1.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="TestProject1.UnitTest1, TestProject1, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="TestCheckMoveTo" />
+    </UnitTest>
+    <UnitTest name="TestCheckFill" storage="c:\users\administrator\documents\visual studio 2010\projects\wpfapplication1\testproject1\bin\debug\testproject1.dll" id="b38daf7c-5dc1-a06b-521e-b2a97b764c6a">
+      <Execution id="fc79550c-ceea-4471-b637-9431e2fdd819" />
+      <TestMethod codeBase="c:/users/administrator/documents/visual studio 2010/Projects/WpfApplication1/TestProject1/bin/Debug/TestProject1.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="TestProject1.UnitTest1, TestProject1, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="TestCheckFill" />
+    </UnitTest>
+    <UnitTest name="TestCheckTriangle" storage="c:\users\administrator\documents\visual studio 2010\projects\wpfapplication1\testproject1\bin\debug\testproject1.dll" id="add4c570-9af0-d15d-78a3-6eb1db798025">
+      <Execution id="cf055dbd-c8c3-45f6-9112-1d9ed74c314e" />
+      <TestMethod codeBase="c:/users/administrator/documents/visual studio 2010/Projects/WpfApplication1/TestProject1/bin/Debug/TestProject1.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="TestProject1.UnitTest1, TestProject1, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="TestCheckTriangle" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <TestEntries>
+    <TestEntry testId="3dd36017-c1b6-6db9-1343-44e0a9729ff7" executionId="d5f8d6bd-b8c3-4c87-abee-2ed565b56de8" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="42685df2-5dab-5d15-22b3-4cd49b9a0162" executionId="edfd8baf-83c1-4ad6-889a-60d5e8cfe603" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="ac5cc1d0-27ff-5d93-6160-f5188249b93e" executionId="dddf9ae2-7cc2-4f40-8df1-26996581342d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="add4c570-9af0-d15d-78a3-6eb1db798025" executionId="cf055dbd-c8c3-45f6-9112-1d9ed74c314e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="ae11f443-4668-abaf-4550-b13abcbdaa9d" executionId="06608f49-b461-4f9e-9df2-8a620d0cb83a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="b38daf7c-5dc1-a06b-521e-b2a97b764c6a" executionId="fc79550c-ceea-4471-b637-9431e2fdd819" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="d5f6c96c-a288-f305-e0b6-f30feac4d3f9" executionId="35c99c43-998f-4732-99cd-9434bf37d3e0" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="ee7c3557-b853-6ee0-1b93-ff91de1cec02" executionId="bd01c1b4-9c00-4f1d-b965-d5bbadb41e3e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="f4577b5d-bd15-15e5-45a8-c23f6631885b" executionId="2976cdc3-6192-4564-98df-ddcecffd7910" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <Results>
+    <UnitTestResult executionId="d5f8d6bd-b8c3-4c87-abee-2ed565b56de8" testId="3dd36017-c1b6-6db9-1343-44e0a9729ff7" testName="TestCheckReset" computerName="W7" duration="00:00:00.0274480" startTime="2021-11-04T11:30:14.0146749-07:00" endTime="2021-11-04T11:30:14.3009493-07:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d5f8d6bd-b8c3-4c87-abee-2ed565b56de8">
+    </UnitTestResult>
+    <UnitTestResult executionId="edfd8baf-83c1-4ad6-889a-60d5e8cfe603" testId="42685df2-5dab-5d15-22b3-4cd49b9a0162" testName="TestCheckMoveTo" computerName="W7" duration="00:00:00.0008183" startTime="2021-11-04T11:30:14.3019500-07:00" endTime="2021-11-04T11:30:14.3059542-07:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="edfd8baf-83c1-4ad6-889a-60d5e8cfe603">
+    </UnitTestResult>
+    <UnitTestResult executionId="dddf9ae2-7cc2-4f40-8df1-26996581342d" testId="ac5cc1d0-27ff-5d93-6160-f5188249b93e" testName="TestCheckPen" computerName="W7" duration="00:00:00.0007110" startTime="2021-11-04T11:30:14.3059542-07:00" endTime="2021-11-04T11:30:14.3099580-07:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="dddf9ae2-7cc2-4f40-8df1-26996581342d">
+    </UnitTestResult>
+    <UnitTestResult executionId="cf055dbd-c8c3-45f6-9112-1d9ed74c314e" testId="add4c570-9af0-d15d-78a3-6eb1db798025" testName="TestCheckTriangle" computerName="W7" duration="00:00:00.0009613" startTime="2021-11-04T11:30:14.3099580-07:00" endTime="2021-11-04T11:30:14.3139619-07:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="cf055dbd-c8c3-45f6-9112-1d9ed74c314e">
+    </UnitTestResult>
+    <UnitTestResult executionId="06608f49-b461-4f9e-9df2-8a620d0cb83a" testId="ae11f443-4668-abaf-4550-b13abcbdaa9d" testName="TestCheckCircle" computerName="W7" duration="00:00:00.0006754" startTime="2021-11-04T11:30:14.3149629-07:00" endTime="2021-11-04T11:30:14.3179661-07:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="06608f49-b461-4f9e-9df2-8a620d0cb83a">
+    </UnitTestResult>
+    <UnitTestResult executionId="fc79550c-ceea-4471-b637-9431e2fdd819" testId="b38daf7c-5dc1-a06b-521e-b2a97b764c6a" testName="TestCheckFill" computerName="W7" duration="00:00:00.0007041" startTime="2021-11-04T11:30:14.3179661-07:00" endTime="2021-11-04T11:30:14.3209685-07:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="fc79550c-ceea-4471-b637-9431e2fdd819">
+    </UnitTestResult>
+    <UnitTestResult executionId="35c99c43-998f-4732-99cd-9434bf37d3e0" testId="d5f6c96c-a288-f305-e0b6-f30feac4d3f9" testName="TestCheckClear" computerName="W7" duration="00:00:00.0005402" startTime="2021-11-04T11:30:14.3219695-07:00" endTime="2021-11-04T11:30:14.3249723-07:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="35c99c43-998f-4732-99cd-9434bf37d3e0">
+    </UnitTestResult>
+    <UnitTestResult executionId="bd01c1b4-9c00-4f1d-b965-d5bbadb41e3e" testId="ee7c3557-b853-6ee0-1b93-ff91de1cec02" testName="TestCheckDrawTo" computerName="W7" duration="00:00:00.0007299" startTime="2021-11-04T11:30:14.3259738-07:00" endTime="2021-11-04T11:30:14.3289762-07:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="bd01c1b4-9c00-4f1d-b965-d5bbadb41e3e">
+    </UnitTestResult>
+    <UnitTestResult executionId="2976cdc3-6192-4564-98df-ddcecffd7910" testId="f4577b5d-bd15-15e5-45a8-c23f6631885b" testName="TestCheckRectangle" computerName="W7" duration="00:00:00.0007401" startTime="2021-11-04T11:30:14.3299772-07:00" endTime="2021-11-04T11:30:14.3329800-07:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="2976cdc3-6192-4564-98df-ddcecffd7910">
+    </UnitTestResult>
+  </Results>
+</TestRun>
