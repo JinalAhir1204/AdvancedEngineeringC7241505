@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="WpfApplication1.shapeFactory">
+    <Position X="4.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAA=</HashCode>
+      <FileName>shapeFactory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WpfApplication1.shapeRectangle">
+    <Position X="2.75" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAaBAIQEQAQAAAIAABAgAAAACAgAAAAAAAA=</HashCode>
+      <FileName>shapeRectangle.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WpfApplication1.shapeRectangleFactory">
+    <Position X="4.75" Y="2.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAaAAAAEAAAAAAIAABAgAAAABAAAAAAAAAA=</HashCode>
+      <FileName>shapeRectangleFactory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WpfApplication1.Shape">
+    <Position X="2.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAABAIAAAAQAAAAAAAAAAAAAAAgAAAAAAAA=</HashCode>
+      <FileName>Shape.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
