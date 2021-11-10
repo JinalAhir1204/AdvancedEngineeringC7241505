@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -27,7 +27,11 @@ namespace WpfApplication1
             InitializeComponent();
             txtCommand.Focus();
         }
-
+        /// <summary>
+        /// This Button Execute the Single line command
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnExecute_Click(object sender, RoutedEventArgs e)
         {
             if (txtCommand.Text.Trim() == "run")
@@ -51,20 +55,34 @@ namespace WpfApplication1
             }
 
         }
-
+       
+        /// <summary>
+        /// This Button Save the Command
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnSave_Click(object sender, RoutedEventArgs e)
+        {
+            String filepath = ".\\" + "MyProgram_" + DateTime.Now.Ticks.ToString() + ".txt";
+            File.WriteAllText(filepath, txtProgram.Text);
+        }
+        /// <summary>
+        /// This Button redirect to the saved commad file and select the pervious saved file and 
+        /// load the previous command 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnLoad_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
             if (openFileDialog.ShowDialog() == true)
                 txtProgram.Text = File.ReadAllText(openFileDialog.FileName);
         }
-
-        private void btnSave_Click(object sender, RoutedEventArgs e)
-        {
-            String filepath = ".\\" + "MyProgram_" + DateTime.Now.Ticks.ToString() + ".txt";
-            File.WriteAllText(filepath, txtProgram.Text);
-        }
-
+        /// <summary>
+        /// This is single line command
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void txtCommand_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Return)
@@ -89,7 +107,11 @@ namespace WpfApplication1
                 }
             }
         }
-
+        /// <summary>
+        /// This button run the multiline commad
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnRun_Click(object sender, RoutedEventArgs e)
         {
             foreach (string command in txtProgram.Text.Split('\n'))
@@ -102,4 +124,3 @@ namespace WpfApplication1
     }
    
 }
-
