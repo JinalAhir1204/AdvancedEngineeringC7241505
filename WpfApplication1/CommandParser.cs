@@ -9,9 +9,6 @@ using System.Windows.Controls;
 
 namespace WpfApplication1
 {
-    /// <summary>
-    /// 
-    /// </summary>
     public class CommandParser
     {
         String Command = "";
@@ -20,7 +17,7 @@ namespace WpfApplication1
         Color penColor = Colors.Black;
         bool fill = false;
         /// <summary>
-        /// 
+        /// This is command parser set method
         /// </summary>
         /// <param name="command"></param>
         public void setCommandParser(string command)
@@ -36,7 +33,7 @@ namespace WpfApplication1
         }
 
         /// <summary>
-        /// 
+        /// This function  excute the valid commad
         /// </summary>
         public void executeCommand()
         {
@@ -77,7 +74,7 @@ namespace WpfApplication1
             }
         }
         /// <summary>
-        /// 
+        /// This function draw the rectangle
         /// </summary>
         /// <param name="width"></param>
         /// <param name="height"></param>
@@ -107,7 +104,7 @@ namespace WpfApplication1
             }
         }
         /// <summary>
-        /// 
+        /// This function draw the circle
         /// </summary>
         /// <param name="radius"></param>
         public void drawCircle(int radius)
@@ -132,7 +129,7 @@ namespace WpfApplication1
             }
         }
         /// <summary>
-        /// 
+        /// This function draw the triangle
         /// </summary>
         /// <param name="x2"></param>
         /// <param name="y2"></param>
@@ -177,7 +174,7 @@ namespace WpfApplication1
 
         }
         /// <summary>
-        /// 
+        /// This function draw the line
         /// </summary>
         /// <param name="x1"></param>
         /// <param name="y1"></param>
@@ -201,7 +198,7 @@ namespace WpfApplication1
             }
         }
         /// <summary>
-        /// 
+        /// This function check the commad is valid or not
         /// </summary>
         /// <param name="command"></param>
         /// <returns></returns>
@@ -217,7 +214,7 @@ namespace WpfApplication1
             }
         }
         /// <summary>
-        /// 
+        /// This boolen function for commands are valid or not 
         /// </summary>
         /// <param name="command"></param>
         /// <returns></returns>
@@ -252,7 +249,7 @@ namespace WpfApplication1
 
         }
         /// <summary>
-        /// 
+        /// This is moveto function for change the position of pointer
         /// </summary>
         /// <param name="commands"></param>
         public void drawMoveTo(string[] commands)
@@ -264,7 +261,7 @@ namespace WpfApplication1
 
         }
         /// <summary>
-        /// 
+        /// This function check the moveto command valid or not
         /// </summary>
         /// <param name="command"></param>
         /// <returns></returns>
@@ -309,7 +306,7 @@ namespace WpfApplication1
             }
         }
         /// <summary>
-        /// 
+        /// T
         /// </summary>
         /// <param name="commands"></param>
         public void drawDrawTo(string[] commands)
@@ -320,7 +317,7 @@ namespace WpfApplication1
 
         }
         /// <summary>
-        /// 
+        /// This function check the drawto command valid or not
         /// </summary>
         /// <param name="command"></param>
         /// <returns></returns>
@@ -365,7 +362,7 @@ namespace WpfApplication1
             }
         }
         /// <summary>
-        /// 
+        /// This function draw the rectangle
         /// </summary>
         /// <param name="commands"></param>
         public void drawRectangle(string[] commands)
@@ -375,7 +372,7 @@ namespace WpfApplication1
             drawRectangle(width, height);
         }
         /// <summary>
-        /// 
+        /// This function check the rectangle command valid or not
         /// </summary>
         /// <param name="command"></param>
         /// <returns></returns>
@@ -420,7 +417,7 @@ namespace WpfApplication1
             }
         }
         /// <summary>
-        /// 
+        /// This function draw the circle
         /// </summary>
         /// <param name="commands"></param>
         public void drawCircle(string[] commands)
@@ -429,7 +426,7 @@ namespace WpfApplication1
             drawCircle(m);
         }
         /// <summary>
-        /// 
+        /// This function check the circle command valid or not
         /// </summary>
         /// <param name="command"></param>
         /// <returns></returns>
@@ -465,7 +462,7 @@ namespace WpfApplication1
             }
         }
         /// <summary>
-        /// 
+        /// This function for draw triangle
         /// </summary>
         /// <param name="commands"></param>
         public void drawTriangle(string[] commands)
@@ -477,7 +474,7 @@ namespace WpfApplication1
             drawTriangle(x2, y2, x3, y3);
         }
         /// <summary>
-        /// 
+        /// This function check the the tranagle shape valid or not
         /// </summary>
         /// <param name="command"></param>
         /// <returns></returns>
@@ -543,7 +540,7 @@ namespace WpfApplication1
             }
         }
         /// <summary>
-        /// this is complete desription of the logic of this function
+        /// This function draw the shape by the pen color 
         /// </summary>
         /// <param name="commands">this is the command</param>
         public void drawPen(string[] commands)
@@ -562,7 +559,7 @@ namespace WpfApplication1
             }
         }
         /// <summary>
-        /// 
+        /// This function check the pen command valid or not
         /// </summary>
         /// <param name="command"></param>
         /// <returns></returns>
@@ -614,7 +611,7 @@ namespace WpfApplication1
 
         }
         /// <summary>
-        /// 
+        /// This function check the clear command valid or not
         /// </summary>
         /// <param name="command"></param>
         /// <returns></returns>
@@ -652,7 +649,7 @@ namespace WpfApplication1
             }
         }
         /// <summary>
-        /// 
+        /// This function clear the drawing canavs
         /// </summary>
         public void drawClear()
         {
@@ -665,7 +662,7 @@ namespace WpfApplication1
             }
         }
         /// <summary>
-        /// 
+        /// This function check the clear command valid or not
         /// </summary>
         /// <param name="command"></param>
         /// <returns></returns>
@@ -682,7 +679,7 @@ namespace WpfApplication1
             }
         }
         /// <summary>
-        /// 
+        ///  This command reset the position 0
         /// </summary>
         public void drawReset()
         {
@@ -693,7 +690,7 @@ namespace WpfApplication1
         }
 
         /// <summary>
-        /// 
+        /// This function check the Reset command valid or not
         /// </summary>
         /// <param name="command"></param>
         /// <returns></returns>
@@ -710,7 +707,7 @@ namespace WpfApplication1
             }
         }
         /// <summary>
-        /// 
+        /// This function check the valid command's Parameter
         /// </summary>
         /// <param name="command"></param>
         /// <returns></returns>
