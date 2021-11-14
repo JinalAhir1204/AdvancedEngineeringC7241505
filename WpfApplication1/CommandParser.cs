@@ -325,7 +325,7 @@ namespace WpfApplication1
                 if (window.GetType() == typeof(MainWindow))
                 {
                     (window as MainWindow).myCanvas.Children.Add(textBlock);
-                    (window as MainWindow).txtOutput.Text = (window as MainWindow).txtOutput.Text + "\n" + "Rectangle Draw";
+                    (window as MainWindow).txtOutput.Text = (window as MainWindow).txtOutput.Text + "\n" + "Invalid";
                 }
             }
         }
