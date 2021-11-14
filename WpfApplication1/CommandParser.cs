@@ -553,6 +553,10 @@ namespace WpfApplication1
             {
                 this.penColor = Colors.Blue;
             }
+            else if (commands[1] == "green")
+            {
+                this.penColor = Colors.Green;
+            }
             else
             {
                 this.penColor = Colors.Black;
@@ -572,7 +576,7 @@ namespace WpfApplication1
                 bool firstArg = false;
                 try
                 {
-                    if (commands[1] == "red" || commands[1] == "blue")
+                    if (commands[1] == "red" || commands[1] == "blue" || commands[1] == "green")
                     {
                         firstArg = true;
                     }
