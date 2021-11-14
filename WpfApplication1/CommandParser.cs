@@ -209,9 +209,14 @@ namespace WpfApplication1
             if (commandIsValid(command) == true && commandHasValidArgs(command) == true)
             {
                 return true;
-            }
-            else
+            }else if (commandIsValid(command) == true && commandHasValidArgs(command) == false)
             {
+                inValidCommand(invalArg, 10.00, 30.00);
+                return false;
+            }
+            else 
+            { 
+                
                 return false;
             }
         }
@@ -246,7 +251,7 @@ namespace WpfApplication1
             }
             else
             {
-                inValidCommand(invalidcommand);
+                inValidCommand(invalidcommand,10.00,10.00);
                 return false;
             }
 
@@ -312,13 +317,13 @@ namespace WpfApplication1
         /// <summary>
         /// If command or params are invalid then this function will execute
         /// </summary>
-        public void inValidCommand(String text)
+        public void inValidCommand(String text,double x,double y)
         {
             TextBlock textBlock = new TextBlock();
             textBlock.Text = text;
             textBlock.Foreground = new SolidColorBrush(Colors.Red);
-            Canvas.SetLeft(textBlock, 10.00);
-            Canvas.SetTop(textBlock, 10.00);
+            Canvas.SetLeft(textBlock, x);
+            Canvas.SetTop(textBlock, y);
             foreach (Window window in Application.Current.Windows)
             {
                 if (window.GetType() == typeof(MainWindow))
@@ -783,7 +788,7 @@ namespace WpfApplication1
             }
             else
             {
-                inValidCommand(invalArg);
+                inValidCommand(invalArg,10.00,30.00);
                 return false;
             }
 
