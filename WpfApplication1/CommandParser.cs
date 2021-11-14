@@ -302,11 +302,32 @@ namespace WpfApplication1
             }
             else
             {
+
+                inValidCommand();
                 return false;
             }
         }
         /// <summary>
-        /// T
+        /// If command is invalid then this function will execute
+        /// </summary>
+        public void inValidCommand()
+        {
+            TextBlock textBlock = new TextBlock();
+            textBlock.Text = "This is not valid Command";
+            textBlock.Foreground = new SolidColorBrush(Colors.Red);
+            Canvas.SetLeft(textBlock, 10.00);
+            Canvas.SetTop(textBlock, 10.00);
+            foreach (Window window in Application.Current.Windows)
+            {
+                if (window.GetType() == typeof(MainWindow))
+                {
+                    (window as MainWindow).myCanvas.Children.Add(textBlock);
+                    (window as MainWindow).txtOutput.Text = (window as MainWindow).txtOutput.Text + "\n" + "Rectangle Draw";
+                }
+            }
+        }
+        /// <summary>
+        /// 
         /// </summary>
         /// <param name="commands"></param>
         public void drawDrawTo(string[] commands)
@@ -358,6 +379,7 @@ namespace WpfApplication1
             }
             else
             {
+                inValidCommand();
                 return false;
             }
         }
@@ -413,6 +435,7 @@ namespace WpfApplication1
             }
             else
             {
+                inValidCommand();
                 return false;
             }
         }
@@ -458,6 +481,7 @@ namespace WpfApplication1
             }
             else
             {
+                inValidCommand();
                 return false;
             }
         }
@@ -536,6 +560,7 @@ namespace WpfApplication1
             }
             else
             {
+                inValidCommand();
                 return false;
             }
         }
@@ -598,6 +623,7 @@ namespace WpfApplication1
             }
             else
             {
+                inValidCommand();
                 return false;
             }
         }
@@ -649,6 +675,7 @@ namespace WpfApplication1
             }
             else
             {
+                inValidCommand();
                 return false;
             }
         }
