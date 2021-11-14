@@ -16,6 +16,8 @@ namespace WpfApplication1
         int penLocationY = 0;
         Color penColor = Colors.Black;
         bool fill = false;
+        String invalidcommand = "This is invalid command";
+        String invalArg = "This command has invalid parameters";
         /// <summary>
         /// This is command parser set method
         /// </summary>
@@ -244,6 +246,7 @@ namespace WpfApplication1
             }
             else
             {
+                inValidCommand(invalidcommand);
                 return false;
             }
 
@@ -303,17 +306,17 @@ namespace WpfApplication1
             else
             {
 
-                inValidCommand();
+                inValidCommand(invalArg);
                 return false;
             }
         }
         /// <summary>
-        /// If command is invalid then this function will execute
+        /// If command or params are invalid then this function will execute
         /// </summary>
-        public void inValidCommand()
+        public void inValidCommand(String text)
         {
             TextBlock textBlock = new TextBlock();
-            textBlock.Text = "This is not valid Command";
+            textBlock.Text = text;
             textBlock.Foreground = new SolidColorBrush(Colors.Red);
             Canvas.SetLeft(textBlock, 10.00);
             Canvas.SetTop(textBlock, 10.00);
@@ -379,7 +382,7 @@ namespace WpfApplication1
             }
             else
             {
-                inValidCommand();
+                inValidCommand(invalArg);
                 return false;
             }
         }
@@ -435,7 +438,7 @@ namespace WpfApplication1
             }
             else
             {
-                inValidCommand();
+                inValidCommand(invalArg);
                 return false;
             }
         }
@@ -481,7 +484,7 @@ namespace WpfApplication1
             }
             else
             {
-                inValidCommand();
+                inValidCommand(invalArg);
                 return false;
             }
         }
@@ -560,7 +563,7 @@ namespace WpfApplication1
             }
             else
             {
-                inValidCommand();
+                inValidCommand(invalArg);
                 return false;
             }
         }
@@ -623,7 +626,7 @@ namespace WpfApplication1
             }
             else
             {
-                inValidCommand();
+                inValidCommand(invalArg);
                 return false;
             }
         }
@@ -675,7 +678,7 @@ namespace WpfApplication1
             }
             else
             {
-                inValidCommand();
+                inValidCommand(invalArg);
                 return false;
             }
         }
