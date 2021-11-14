@@ -305,8 +305,7 @@ namespace WpfApplication1
             }
             else
             {
-
-                inValidCommand(invalArg);
+;
                 return false;
             }
         }
@@ -382,7 +381,7 @@ namespace WpfApplication1
             }
             else
             {
-                inValidCommand(invalArg);
+               
                 return false;
             }
         }
@@ -438,7 +437,7 @@ namespace WpfApplication1
             }
             else
             {
-                inValidCommand(invalArg);
+              
                 return false;
             }
         }
@@ -484,7 +483,7 @@ namespace WpfApplication1
             }
             else
             {
-                inValidCommand(invalArg);
+              
                 return false;
             }
         }
@@ -563,7 +562,7 @@ namespace WpfApplication1
             }
             else
             {
-                inValidCommand(invalArg);
+               
                 return false;
             }
         }
@@ -626,7 +625,7 @@ namespace WpfApplication1
             }
             else
             {
-                inValidCommand(invalArg);
+               
                 return false;
             }
         }
@@ -678,7 +677,6 @@ namespace WpfApplication1
             }
             else
             {
-                inValidCommand(invalArg);
                 return false;
             }
         }
@@ -785,6 +783,7 @@ namespace WpfApplication1
             }
             else
             {
+                inValidCommand(invalArg);
                 return false;
             }
 
