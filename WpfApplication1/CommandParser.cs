@@ -9,8 +9,12 @@ using System.Windows.Controls;
 
 namespace WpfApplication1
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class CommandParser
     {
+        public Dictionary<string, string> variables_values = new Dictionary<string, string>();
         String Command = "";
         int penLocationX = 0;
         int penLocationY = 0;
@@ -24,7 +28,8 @@ namespace WpfApplication1
         /// <param name="command"></param>
         public void setCommandParser(string command)
         {
-           if (checkCommand(command) == true)
+            //This is a constructor. It is not being used as of now
+            if (checkCommand(command) == true)
             {
                 this.Command = command;
             }
@@ -208,15 +213,17 @@ namespace WpfApplication1
         {
             if (commandIsValid(command) == true && commandHasValidArgs(command) == true)
             {
+                Console.WriteLine(variables_values.ToArray().Length.ToString());
                 return true;
-            }else if (commandIsValid(command) == true && commandHasValidArgs(command) == false)
+
+            }
+            else if (commandIsValid(command) == true && commandHasValidArgs(command) == false)
             {
                 inValidCommand(invalArg, 10.00, 30.00);
                 return false;
             }
-            else 
-            { 
-                
+            else
+            {
                 return false;
             }
         }
@@ -237,21 +244,22 @@ namespace WpfApplication1
             //triangle
             //pen
             //fill
-            if (command.StartsWith("moveto") ||
-                command.StartsWith("drawto") ||
+            if (command.StartsWith("moveto ") ||
+                command.StartsWith("drawto ") ||
                 command.StartsWith("clear") ||
                 command.StartsWith("reset") ||
-                command.StartsWith("rectangle") ||
-                command.StartsWith("circle") ||
-                command.StartsWith("triangle") ||
-                command.StartsWith("pen") ||
-                command.StartsWith("fill"))
+                command.StartsWith("rectangle ") ||
+                command.StartsWith("circle ") ||
+                command.StartsWith("triangle ") ||
+                command.StartsWith("pen ") ||
+                command.StartsWith("fill ") ||
+                command.StartsWith("Var "))
             {
                 return true;
             }
             else
             {
-                inValidCommand(invalidcommand,10.00,10.00);
+                inValidCommand(invalidcommand, 10.00, 10.00);
                 return false;
             }
 
@@ -310,14 +318,14 @@ namespace WpfApplication1
             }
             else
             {
-;
                 return false;
             }
         }
+
         /// <summary>
         /// If command or params are invalid then this function will execute
         /// </summary>
-        public void inValidCommand(String text,double x,double y)
+        public void inValidCommand(String text, double x, double y)
         {
             TextBlock textBlock = new TextBlock();
             textBlock.Text = text;
@@ -333,6 +341,7 @@ namespace WpfApplication1
                 }
             }
         }
+
         /// <summary>
         /// 
         /// </summary>
@@ -344,6 +353,7 @@ namespace WpfApplication1
             drawLine(x2, y2);
 
         }
+
         /// <summary>
         /// This function check the drawto command valid or not
         /// </summary>
@@ -386,10 +396,10 @@ namespace WpfApplication1
             }
             else
             {
-               
                 return false;
             }
         }
+
         /// <summary>
         /// This function draw the rectangle
         /// </summary>
@@ -400,6 +410,7 @@ namespace WpfApplication1
             int height = Int32.Parse(commands[2]);
             drawRectangle(width, height);
         }
+
         /// <summary>
         /// This function check the rectangle command valid or not
         /// </summary>
@@ -442,10 +453,10 @@ namespace WpfApplication1
             }
             else
             {
-              
                 return false;
             }
         }
+
         /// <summary>
         /// This function draw the circle
         /// </summary>
@@ -488,7 +499,6 @@ namespace WpfApplication1
             }
             else
             {
-              
                 return false;
             }
         }
@@ -505,7 +515,7 @@ namespace WpfApplication1
             drawTriangle(x2, y2, x3, y3);
         }
         /// <summary>
-        /// This function check the the tranagle shape valid or not
+        /// 
         /// </summary>
         /// <param name="command"></param>
         /// <returns></returns>
@@ -567,14 +577,13 @@ namespace WpfApplication1
             }
             else
             {
-               
                 return false;
             }
         }
         /// <summary>
         /// This function draw the shape by the pen color 
         /// </summary>
-        /// <param name="commands">this is the command</param>
+        /// <param name="commands"></param>
         public void drawPen(string[] commands)
         {
             if (commands[1] == "red")
@@ -584,10 +593,6 @@ namespace WpfApplication1
             else if (commands[1] == "blue")
             {
                 this.penColor = Colors.Blue;
-            }
-            else if (commands[1] == "green")
-            {
-                this.penColor = Colors.Green;
             }
             else
             {
@@ -601,14 +606,13 @@ namespace WpfApplication1
         /// <returns></returns>
         public bool checkpen(String command)
         {
-           
             string[] commands = command.Split(' ');
             if (commands[0].Contains("pen") && (commands.Length == 2))
             {
                 bool firstArg = false;
                 try
                 {
-                    if (commands[1] == "red" || commands[1] == "blue" || commands[1] == "green")
+                    if (commands[1] == "red" || commands[1] == "blue")
                     {
                         firstArg = true;
                     }
@@ -630,7 +634,6 @@ namespace WpfApplication1
             }
             else
             {
-               
                 return false;
             }
         }
@@ -686,6 +689,50 @@ namespace WpfApplication1
             }
         }
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="command"></param>
+        /// <returns></returns>
+        public bool checkvar(String command)
+        {
+            command = command.Replace("Var ", "Var$");
+            while (command.Contains("  "))//we ensure that command only contain a single space as separator
+            {
+                command = command.Replace("  ", " ");
+            }
+
+            while (command.Contains("\t"))//we ensure that command only contain a single space as separator
+            {
+                command = command.Replace("\t", " ");
+            }
+            while (command.Contains(" "))//we ensure that command only contain a single space as separator
+            {
+                command = command.Replace(" ", "");
+            }
+            string[] commands = command.Split('$');
+            if (commands[0].Contains("Var") && (commands.Length == 2))
+            {
+                string[] varVal = commands[1].Split('=');
+                string varName = varVal[0];
+                string varValue = varVal[1];
+                try
+                {
+                    variables_values.Add(varName, varValue);
+                    return true;
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                    return false;
+                }
+
+            }
+            else
+            {
+                return false;
+            }
+        }
+        /// <summary>
         /// This function clear the drawing canavs
         /// </summary>
         public void drawClear()
@@ -716,7 +763,7 @@ namespace WpfApplication1
             }
         }
         /// <summary>
-        ///  This command reset the position 0
+        /// This command reset the position 0
         /// </summary>
         public void drawReset()
         {
@@ -750,11 +797,11 @@ namespace WpfApplication1
         /// <returns></returns>
         public bool commandHasValidArgs(String command)
         {
-            if (command.StartsWith("moveto"))
+            if (command.StartsWith("moveto "))
             {
                 return checkmoveto(command);
             }
-            else if (command.StartsWith("drawto"))
+            else if (command.StartsWith("drawto "))
             {
                 return checkdrawto(command);
             }
@@ -766,29 +813,32 @@ namespace WpfApplication1
             {
                 return checkreset(command);
             }
-            else if (command.StartsWith("rectangle"))
+            else if (command.StartsWith("rectangle "))
             {
                 return checkrectangle(command);
             }
-            else if (command.StartsWith("circle"))
+            else if (command.StartsWith("circle "))
             {
                 return checkcircle(command);
             }
-            else if (command.StartsWith("triangle"))
+            else if (command.StartsWith("triangle "))
             {
                 return checktriangle(command);
             }
-            else if (command.StartsWith("pen"))
+            else if (command.StartsWith("pen "))
             {
                 return checkpen(command);
             }
-            else if (command.StartsWith("fill"))
+            else if (command.StartsWith("fill "))
             {
                 return checkfill(command);
             }
+            else if (command.StartsWith("Var "))
+            {
+                return checkvar(command);
+            }
             else
             {
-                inValidCommand(invalArg,10.00,30.00);
                 return false;
             }
 
