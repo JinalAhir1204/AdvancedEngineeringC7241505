@@ -13,6 +13,8 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.IO;
 using Microsoft.Win32;
+using System.Text.RegularExpressions;
+
 
 namespace WpfApplication1
 {
@@ -22,12 +24,50 @@ namespace WpfApplication1
     public partial class MainWindow : Window
     {
         CommandParser cmdParser = new CommandParser();
-        List<string> programBlocks = new List<string>();
-        public Dictionary<string, string> variables_values = new Dictionary<string, string>();
+        //public List<string> programBlocks = new List<string>();
+        //public Dictionary<string, string> variables_values = new Dictionary<string, string>();
+        public List<string> singleCommandsList = new List<string>();
+        public List<string> reservedKeywords = new List<string>();
+        public List<string> programBlockKeywords = new List<string>();
+
         public MainWindow()
         {
             InitializeComponent();
             txtCommand.Focus();
+            singleCommandsList.Add("moveto ");
+            singleCommandsList.Add("drawto ");
+            singleCommandsList.Add("clear");
+            singleCommandsList.Add("reset");
+            singleCommandsList.Add("rectangle ");
+            singleCommandsList.Add("circle ");
+            singleCommandsList.Add("triangle ");
+            singleCommandsList.Add("pen ");
+            singleCommandsList.Add("fill ");
+
+            programBlockKeywords.Add("While ");
+            programBlockKeywords.Add("EndWhile\n");
+            programBlockKeywords.Add("If ");
+            programBlockKeywords.Add("EndIf\n");
+            programBlockKeywords.Add("Method ");
+            programBlockKeywords.Add("EndMethod\n");
+            programBlockKeywords.Add("Var ");
+
+            reservedKeywords.Add("moveto");
+            reservedKeywords.Add("drawto");
+            reservedKeywords.Add("clear");
+            reservedKeywords.Add("reset");
+            reservedKeywords.Add("rectangle");
+            reservedKeywords.Add("circle");
+            reservedKeywords.Add("triangle");
+            reservedKeywords.Add("pen");
+            reservedKeywords.Add("fill");
+            reservedKeywords.Add("While");
+            reservedKeywords.Add("EndWhile");
+            reservedKeywords.Add("If");
+            reservedKeywords.Add("EndIf");
+            reservedKeywords.Add("Method");
+            reservedKeywords.Add("EndMethod");
+            reservedKeywords.Add("Var");
         }
         /// <summary>
         /// This Button Execute the Single line command
@@ -56,7 +96,36 @@ namespace WpfApplication1
                 e.Handled = true;
             }
         }
-
+        /// <summary>
+        /// This is single line command
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void txtCommand_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Return)
+            {
+                if (txtCommand.Text.Trim() == "run")
+                {
+                    foreach (string command in txtProgram.Text.Split('\n'))
+                    {
+                        cmdParser.setCommandParser(command.Trim());
+                        cmdParser.executeCommand();
+                        txtOutput.Text = txtOutput.Text + "\n" + command.Trim();
+                    }
+                    txtCommand.Text = "";
+                }
+                else
+                {
+                    //now we execute the above command
+                    cmdParser.setCommandParser(txtCommand.Text);
+                    cmdParser.executeCommand();
+                    txtOutput.Text = txtOutput.Text + "\n" + txtCommand.Text;
+                    txtCommand.Text = "";
+                    e.Handled = true;
+                }
+            }
+        }
         /// <summary>
         /// This Button redirect to the saved commad file and select the pervious saved file and 
         /// load the previous command 
@@ -81,34 +150,32 @@ namespace WpfApplication1
             File.WriteAllText(filepath, txtProgram.Text);
         }
 
-        /// <summary>
-        /// This is single line command
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void txtCommand_PreviewKeyDown(object sender, KeyEventArgs e)
+        private bool checkforProgramBlocks(string text)
         {
-            if (e.Key == Key.Return)
+            bool retVal = false;
+            foreach (string obj in programBlockKeywords)
             {
-                if (txtCommand.Text.Trim() == "run") {
-                    foreach (string command in txtProgram.Text.Split('\n'))
-                    {
-                        cmdParser.setCommandParser(command.Trim());
-                        cmdParser.executeCommand();
-                        txtOutput.Text = txtOutput.Text + "\n" + command.Trim();
-                    }
-                    txtCommand.Text = "";
-                }
-                else
+                if (text.Contains(obj))
                 {
-                    //now we execute the above command
-                    cmdParser.setCommandParser(txtCommand.Text);
-                    cmdParser.executeCommand();
-                    txtOutput.Text = txtOutput.Text + "\n" + txtCommand.Text;
-                    txtCommand.Text = "";
-                    e.Handled = true;
+                    retVal = true;
+                    break;
                 }
             }
+            return retVal;
+        }
+
+        private bool checkforReservedKeywords(string text)
+        {
+            bool retVal = false;
+            foreach (string obj in reservedKeywords)
+            {
+                if (text.Trim().Equals(obj))
+                {
+                    retVal = true;
+                    break;
+                }
+            }
+            return retVal;
         }
 
         /// <summary>
@@ -118,14 +185,7 @@ namespace WpfApplication1
         /// <param name="e"></param>
         private void btnRun_Click(object sender, RoutedEventArgs e)
         {
-            if (txtProgram.Text.Contains("While ") || //this program contains code which cannot be simply executed line by line
-                txtProgram.Text.Contains("EndWhile\n") || 
-                txtProgram.Text.Contains("If ") ||
-                txtProgram.Text.Contains("EndIf\n") ||
-                txtProgram.Text.Contains("Method ") ||
-                txtProgram.Text.Contains("EndMethod\n") || 
-                txtProgram.Text.Contains("Var ")
-            )
+            if (checkforProgramBlocks(txtProgram.Text))
             {
                 //from the program we first divide the program into appropriate code blocks... if endif, while endwhile, method endmethod
                 //moveto
@@ -139,8 +199,8 @@ namespace WpfApplication1
                 //fill
                 //Var 
                 string[] lines = txtProgram.Text.Split('\n');
-                
-                for(int i = 0; i< lines.Length;i++)
+
+                for (int i = 0; i < lines.Length; i++)
                 {
                     string codeblock = "";//we declare this here as everyline can be a code block
 
@@ -153,7 +213,7 @@ namespace WpfApplication1
                     {
                         lines[i] = lines[i].Replace("\t", " ");
                     }
-                    
+
 
                     if (lines[i].StartsWith("While "))//while condition
                     {
@@ -163,7 +223,7 @@ namespace WpfApplication1
                             codeblock = codeblock + lines[i];
                             if (lines[i].Trim().Equals("EndWhile"))
                             {
-                                programBlocks.Add(codeblock);
+                                cmdParser.programBlocks.Add(codeblock);
                                 break;
                             }
                         }
@@ -177,7 +237,7 @@ namespace WpfApplication1
                             codeblock = codeblock + lines[i];
                             if (lines[i].Trim().Equals("EndIf"))
                             {
-                                programBlocks.Add(codeblock);
+                                cmdParser.programBlocks.Add(codeblock);
                                 break;
                             }
                         }
@@ -191,27 +251,17 @@ namespace WpfApplication1
                             codeblock = codeblock + lines[i];
                             if (lines[i].Trim().Equals("EndMethod"))
                             {
-                                programBlocks.Add(codeblock);
+                                cmdParser.programBlocks.Add(codeblock);
                                 break;
                             }
                         }
                         continue;
                     }
-                    else if (lines[i].StartsWith("Var ") ||
-                                lines[i].StartsWith("moveto ") ||
-                                lines[i].StartsWith("drawto ") ||
-                                lines[i].StartsWith("clear") ||
-                                lines[i].StartsWith("reset") ||
-                                lines[i].StartsWith("rectangle ") ||
-                                lines[i].StartsWith("circle ") ||
-                                lines[i].StartsWith("triangle ") ||
-                                lines[i].StartsWith("pen ") ||
-                                lines[i].StartsWith("fill ")                         
-                        )
+                    else if (lines[i].StartsWith("Var ") || singleLineExecutableCommand(lines[i]))
                     {
                         //code block finishes at end of line
                         string command = lines[i].Trim();
-                        programBlocks.Add(command);
+                        cmdParser.programBlocks.Add(command);
 
                         //we also initialize the variables
                         if (command.StartsWith("Var "))
@@ -222,33 +272,55 @@ namespace WpfApplication1
                             {
                                 string[] varVal = commands[1].Split('=');
                                 string varName = varVal[0].Trim();
-                                string varValue = varVal[1].Trim();
-                                try
+                                //variable name should always start with an alphabet
+                                if (varName.Length < 10)
                                 {
-                                    variables_values.Add(varName, varValue);
+                                    txtOutput.Text = txtOutput.Text + "\n" + "Variable name should be >= 10 characters in length." + "\n";
                                 }
-                                catch (Exception ex)
+                                else if (checkContainsOnlyAlphabets(varName) &&   varName.Length >= 10)
                                 {
-                                    Console.WriteLine(ex.Message);
+                                    //check that varName is not one of the reserved keywords
+                                    if (!checkforReservedKeywords(varName))//Not a reserved keyword//This is now useless as varName.Length >=10
+                                    {
+                                        string varValue = varVal[1].Trim();
+                                        try
+                                        {
+                                            cmdParser.variables_values.Add(varName, varValue);
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            Console.WriteLine(ex.Message);
+                                        }
+                                    }
+                                    else //the varName is a reserved keyword
+                                    {
+                                        txtOutput.Text = txtOutput.Text + "\n" + "Reserved Keyword '" + varName + "'Used as a Variable Name" + "\n";
+                                    }  
                                 }
+                                 
                             }
-                            
                         }
                         continue;
                     }
+                }//End of for loop
+                //Here the whole program has been read into programblocks and all the variables in the variable_values, so we can now start executing them
+
+                foreach (string obj in cmdParser.programBlocks.ToArray())
+                {
+                    if (singleLineExecutableCommand(obj))
+                    {
+                        string command = obj.Trim();
+                        //we check if this single line command contains argument, if so the argName will be replaced by its value
+                        command = replaceVarNameWithItsValueInCommand(command);
+                        cmdParser.setCommandParser(command);
+                        cmdParser.executeCommand();
+                    }
+                    
                 }
-                //we initialize all the variable values in a dictionary which are not in any of the above code blocks
-                //foreach (string command in txtProgram.Text.Split('\n'))//split with newline ensures that conditions like "abcVar" does not occur
-                                                                        //it always will be like abc \n Var
-                //{
-                //    if (command.Trim().Contains("Var "))
-                //    {
-                //        cmdParser.setCommandParser(command.Trim());
-                //    }
-                //}
 
             }
-            else{//this program is a script and can be executed line by line. It only contains the following
+            else
+            {//this program is a script and can be executed line by line. It only contains the following
                 //moveto
                 //drawto
                 //clear
@@ -266,23 +338,64 @@ namespace WpfApplication1
                 }
             }
         }
+        private static bool checkContainsOnlyAlphabets(string str)
+        {
+
+            string a = str.Substring(0, 1);
+            bool isAlphaBet = Regex.IsMatch(a.ToString(), "^[a-zA-Z]*$", RegexOptions.Singleline);
+            if (isAlphaBet)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        private string replaceVarNameWithItsValueInCommand(string command)
+        {
+            foreach (KeyValuePair<string, string> obj in cmdParser.variables_values.ToArray())
+            {
+                if (command.Contains(obj.Key))//contains is a bug here because reservedKeywords can be substrings of varNames (obj.Key) 
+                {
+                    command = command.Replace(obj.Key, obj.Value);
+                }
+            }
+            return command;
+        }
+
+        private bool singleLineExecutableCommand(string command)
+        {
+            bool retVal = false;
+            foreach (string obj in singleCommandsList.ToArray())
+            {
+                if (command.StartsWith(obj))
+                {
+                    retVal = true;
+                    break;
+                }
+            }
+            return retVal;
+        }
 
         private void btnCheckSyntax_Click(object sender, RoutedEventArgs e)
         {
-            txtOutput.Text = txtOutput.Text + "Program Blocks" + "\n";
-            foreach(string obj in programBlocks.ToArray())
+            txtOutput.Text = txtOutput.Text + "No of Program Blocks = " + cmdParser.programBlocks.Count + ". Program Blocks Started" + "\n";
+            foreach (string obj in cmdParser.programBlocks.ToArray())
             {
                 txtOutput.Text = txtOutput.Text + "---------------------" + "\n";
-                txtOutput.Text = txtOutput.Text + "\n" + obj;
+                txtOutput.Text = txtOutput.Text + obj + "\n";
             }
-            txtOutput.Text = txtOutput.Text + "Variables" + "\n";
-            foreach (KeyValuePair <string,string> obj in variables_values.ToArray())
+            txtOutput.Text = txtOutput.Text + "Program Blocks Finished" + "\n";
+            txtOutput.Text = txtOutput.Text + "No of Variables = " + cmdParser.variables_values.Count + ". Variables Started" + "\n";
+            foreach (KeyValuePair<string, string> obj in cmdParser.variables_values.ToArray())
             {
-                txtOutput.Text = txtOutput.Text + "\n" + obj.Key + ": " + obj.Value;
+                txtOutput.Text = txtOutput.Text + obj.Key + ": " + obj.Value + "\n";
             }
-            
+            txtOutput.Text = txtOutput.Text + "Variables Finished" + "\n";
+
         }
     }
-   
+
 }
 
