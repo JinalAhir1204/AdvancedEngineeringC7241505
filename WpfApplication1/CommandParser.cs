@@ -12,8 +12,9 @@ namespace WpfApplication1
     /// <summary>
     /// 
     /// </summary>
-    public class CommandParser
+    public  class CommandParser
     {
+        public List<string> programBlocks = new List<string>();
         public Dictionary<string, string> variables_values = new Dictionary<string, string>();
         String Command = "";
         int penLocationX = 0;
