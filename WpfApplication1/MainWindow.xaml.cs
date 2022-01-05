@@ -509,8 +509,6 @@ namespace WpfApplication1
 
         }
 
-
-
         private static bool checkContainsOnlyAlphabets(string str)
         {
 
@@ -602,6 +600,26 @@ namespace WpfApplication1
                 txtOutput.Text = txtOutput.Text + obj.Key + ": " + obj.Value + "\n";
             }
             txtOutput.Text = txtOutput.Text + "Variables Finished" + "\n";
+
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            SingletonRectangle rectangle = SingletonRectangle.GetInstance;//No instance for this class has to be created.
+            //A single instance will automatically be created and maintained throuhout the lifecycle of the the application.
+
+            Rectangle rect;//This is a graphics object. Its parameters will be set from the Rectangle Factory Object
+            rect = new Rectangle();
+            rect.Stroke = new SolidColorBrush(rectangle.penColor);
+            if (rectangle.fill)
+            {
+                rect.Fill = new SolidColorBrush(rectangle.penColor);
+            }
+            rect.Width = rectangle.width;
+            rect.Height = rectangle.height;
+            Canvas.SetLeft(rect, rectangle.penLocationX);
+            Canvas.SetTop(rect, rectangle.penLocationY);
+            this.myCanvas.Children.Add(rect);
 
         }
     }
