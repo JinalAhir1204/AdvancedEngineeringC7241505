@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -26,7 +26,7 @@ namespace WpfApplication1
     {
         CommandParser cmdParser = new CommandParser();
         //public List<string> programBlocks = new List<string>();
-        //public Dictionary<string, string> variables_values = new Dictionary<string, string>();
+        public Dictionary<string, string> method_block = new Dictionary<string, string>();//methodname, methodstatements
         public List<string> singleCommandsList = new List<string>();
         public List<string> reservedKeywords = new List<string>();
         public List<string> programBlockKeywords = new List<string>();
@@ -252,7 +252,8 @@ namespace WpfApplication1
                             codeblock = codeblock + lines[i];
                             if (lines[i].Trim().Equals("EndMethod"))
                             {
-                                cmdParser.programBlocks.Add(codeblock);
+                                cmdParser.programBlocks.Add(codeblock.Trim());
+                                addMethodBlock(codeblock.Trim());
                                 break;
                             }
                         }
@@ -303,6 +304,22 @@ namespace WpfApplication1
                         }
                         continue;
                     }
+                    else
+                    {
+                        //check if this statement is a Method call
+                        foreach (KeyValuePair<string, string> method in method_block.ToArray())
+                        {
+                            if (lines[i].Trim().Equals(method.Key + "()"))
+                            {
+                                foreach (string statement in method.Value.Split('\n'))
+                                {
+                                    cmdParser.setCommandParser(statement.Trim());
+                                    cmdParser.executeCommand();
+                                    txtOutput.Text = txtOutput.Text + "\n" + lines[i].Trim();
+                                }
+                            }
+                        }
+                    }
                 }//End of for loop
                 //Here the whole program has been read into programblocks and all the variables in the variable_values, so we can now start executing them
 
@@ -335,7 +352,11 @@ namespace WpfApplication1
                             }
                             else if (command.StartsWith("Method "))
                             {
-                                executeMethodBlock(command);
+
+                            }
+                            else
+                            {
+
                             }
 
                         }
@@ -372,12 +393,12 @@ namespace WpfApplication1
         }
 
         public void executeIfBlock(string block)
-        { 
+        {
             //if has a condition after the keyword
-            string[] lines=block.Split('\r');
+            string[] lines = block.Split('\r');
 
             //we extract and test the condition
-            string condition = lines[0].Replace("If ","").Trim();
+            string condition = lines[0].Replace("If ", "").Trim();
             condition = replaceVarNameWithItsValueInCommand(condition).Trim();
 
             //we take into consideration the following conditions
@@ -391,11 +412,11 @@ namespace WpfApplication1
                 {
                     for (int i = 1; i < lines.Length; i++)
                     {
-                        
+
                         string command = replaceVarNameWithItsValueInCommand(lines[i].Trim());
-                        if (command.Equals("EndIf")) 
+                        if (command.Equals("EndIf"))
                         {
-                            break; 
+                            break;
                         }
                         else
                         {
@@ -424,7 +445,7 @@ namespace WpfApplication1
             }
             else//no more conditions
             {
-                txtOutput.Text = txtOutput.Text + "\n" + "only == and != are supported." +"\n";
+                txtOutput.Text = txtOutput.Text + "\n" + "only == and != are supported." + "\n";
             }
         }
         public void executeWhileBlock(string block)
@@ -441,39 +462,51 @@ namespace WpfApplication1
                 string[] left_right = condition.Split('>');
                 int left = (int)evaluateExpression(left_right[0].Trim());
                 int right = (int)evaluateExpression(left_right[1].Trim());
-                while (left>right)
+                while (left > right)
                 {
                     for (int i = 1; i < lines.Length; i++)
                     {
                         string command = replaceVarNameWithItsValueInCommand(lines[i].Trim());
-                        
-                    if (command.Equals("EndWhile"))
-                            {
-                                break;
-                            }
-                            else
-                            {
-                                cmdParser.setCommandParser(command);
-                                cmdParser.executeCommand();
-                                txtOutput.Text = txtOutput.Text + "\n" + command;
-                            }
+
+                        if (command.Equals("EndWhile"))
+                        {
+                            break;
+                        }
+                        else
+                        {
+                            cmdParser.setCommandParser(command);
+                            cmdParser.executeCommand();
+                            txtOutput.Text = txtOutput.Text + "\n" + command;
+                        }
                     }
                 }
-                    
-                
+
+
             }
             else if (condition.Contains("<"))//==
             {
 
             }
             else //no more conditions
-            { 
+            {
 
             }
         }
-        public void executeMethodBlock(string block)
-        { 
-        
+        public void addMethodBlock(string block)
+        {
+            string[] lines = block.Split('\r');
+            string statements = "";
+            //we extract the method name
+            string methodName = lines[0].Replace("Method ", "").Trim();
+            for (int i = 1; i < lines.Length - 1; i++)
+            {
+                if (lines[i].Trim().Equals("EndMethod"))
+                { break; }
+                statements = statements + lines[i] + "\r\n";
+            }
+            method_block.Add(methodName, statements);
+
+
         }
 
 
@@ -512,10 +545,10 @@ namespace WpfApplication1
         }
         private string assignVarNameWithItsValueonRHS(string command)
         {
-            string[] left_right=command.Split('=');
+            string[] left_right = command.Split('=');
             string left = left_right[0].Trim();
             string right = left_right[1].Trim();
-            int value=0;
+            int value = 0;
             foreach (KeyValuePair<string, string> obj in cmdParser.variables_values.ToArray())
             {
                 if (right.Contains(obj.Key))//contains is a bug here because reservedKeywords can be substrings of varNames (obj.Key) 
@@ -526,7 +559,7 @@ namespace WpfApplication1
                 }
             }
             return left + "=" + value;
-           
+
         }
         private bool singleLineExecutableCommand(string command)
         {
@@ -552,7 +585,7 @@ namespace WpfApplication1
                 }
             }
             return retVal;
-            
+
         }
         private void btnCheckSyntax_Click(object sender, RoutedEventArgs e)
         {

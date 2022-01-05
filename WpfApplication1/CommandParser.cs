@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -45,7 +45,7 @@ namespace WpfApplication1
         /// </summary>
         public void executeCommand()
         {
-            if (this.Command != "")
+            if (this.Command != "" && this.Command.Trim().Length > 0)
             {
                 string[] commands = this.Command.Split(' ');
                 switch (commands[0])
@@ -212,16 +212,23 @@ namespace WpfApplication1
         /// <returns></returns>
         public bool checkCommand(String command)
         {
-            if (commandIsValid(command) == true && commandHasValidArgs(command) == true)
+            if (command.Trim().Length > 0)
             {
-                Console.WriteLine(variables_values.ToArray().Length.ToString());
-                return true;
+                if (commandIsValid(command) == true && commandHasValidArgs(command) == true)
+                {
+                    Console.WriteLine(variables_values.ToArray().Length.ToString());
+                    return true;
 
-            }
-            else if (commandIsValid(command) == true && commandHasValidArgs(command) == false)
-            {
-                inValidCommand(invalArg, 10.00, 30.00);
-                return false;
+                }
+                else if (commandIsValid(command) == true && commandHasValidArgs(command) == false)
+                {
+                    inValidCommand(invalArg, 10.00, 30.00, command);
+                    return false;
+                }
+                else
+                {
+                    return false;
+                }
             }
             else
             {
@@ -260,7 +267,7 @@ namespace WpfApplication1
             }
             else
             {
-                inValidCommand(invalidcommand, 10.00, 10.00);
+                inValidCommand(invalidcommand, 10.00, 10.00, command);
                 return false;
             }
 
@@ -326,7 +333,7 @@ namespace WpfApplication1
         /// <summary>
         /// If command or params are invalid then this function will execute
         /// </summary>
-        public void inValidCommand(String text, double x, double y)
+        public void inValidCommand(String text, double x, double y, string command)
         {
             TextBlock textBlock = new TextBlock();
             textBlock.Text = text;
@@ -338,7 +345,7 @@ namespace WpfApplication1
                 if (window.GetType() == typeof(MainWindow))
                 {
                     (window as MainWindow).myCanvas.Children.Add(textBlock);
-                    (window as MainWindow).txtOutput.Text = (window as MainWindow).txtOutput.Text + "\n" + "Invalid";
+                    (window as MainWindow).txtOutput.Text = (window as MainWindow).txtOutput.Text + "\n" + command + " Invalid";
                 }
             }
         }
