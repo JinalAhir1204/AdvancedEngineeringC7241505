@@ -1,0 +1,22 @@
+E:\1\WpfApplication1\TestProject1\bin\Debug\TestProject1.dll
+E:\1\WpfApplication1\TestProject1\bin\Debug\TestProject1.pdb
+E:\1\WpfApplication1\TestProject1\bin\Debug\WpfApplication1.exe
+E:\1\WpfApplication1\TestProject1\bin\Debug\WpfApplication1.pdb
+E:\1\WpfApplication1\TestProject1\obj\Debug\TestProject1.csprojResolveAssemblyReference.cache
+E:\1\WpfApplication1\TestProject1\obj\Debug\TestProject1.dll
+E:\1\WpfApplication1\TestProject1\obj\Debug\TestProject1.pdb
+G:\1\WpfApplication1\TestProject1\bin\Debug\TestProject1.dll
+G:\1\WpfApplication1\TestProject1\bin\Debug\TestProject1.pdb
+G:\1\WpfApplication1\TestProject1\bin\Debug\WpfApplication1.exe
+G:\1\WpfApplication1\TestProject1\bin\Debug\WpfApplication1.pdb
+G:\1\WpfApplication1\TestProject1\obj\Debug\TestProject1.csprojResolveAssemblyReference.cache
+G:\1\WpfApplication1\TestProject1\obj\Debug\TestProject1.dll
+G:\1\WpfApplication1\TestProject1\obj\Debug\TestProject1.pdb
+C:\Users\Administrator\Documents\Visual Studio 2010\Projects\WpfApplication1\TestProject1\obj\Debug\TestProject1.csprojResolveAssemblyReference.cache
+C:\Users\Administrator\documents\visual studio 2010\Projects\WpfApplication1\TestProject1\bin\Debug\TestProject1.dll
+C:\Users\Administrator\documents\visual studio 2010\Projects\WpfApplication1\TestProject1\bin\Debug\TestProject1.pdb
+C:\Users\Administrator\documents\visual studio 2010\Projects\WpfApplication1\TestProject1\bin\Debug\WpfApplication1.exe
+C:\Users\Administrator\documents\visual studio 2010\Projects\WpfApplication1\TestProject1\bin\Debug\WpfApplication1.pdb
+C:\Users\Administrator\documents\visual studio 2010\Projects\WpfApplication1\TestProject1\obj\Debug\TestProject1.dll
+C:\Users\Administrator\documents\visual studio 2010\Projects\WpfApplication1\TestProject1\obj\Debug\TestProject1.pdb
+C:\Users\Administrator\documents\visual studio 2010\Projects\WpfApplication1\TestProject1\bin\Debug\WpfApplication1.xml

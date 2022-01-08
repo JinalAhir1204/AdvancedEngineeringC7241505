@@ -1,0 +1,377 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>WpfApplication1</name>
+    </assembly>
+    <members>
+        <member name="T:WpfApplication1.Properties.Resources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:WpfApplication1.Properties.Resources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:WpfApplication1.Properties.Resources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="T:WpfApplication1.Splash">
+            <summary>
+            Interaction logic for Splash.xaml
+            </summary>
+            <summary>
+            Splash
+            </summary>
+        </member>
+        <member name="M:WpfApplication1.Splash.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:WpfApplication1.CommandParser">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:WpfApplication1.CommandParser.#ctor">
+            <summary>
+            This is the constructor for the CommandParser Class
+            </summary>
+        </member>
+        <member name="M:WpfApplication1.CommandParser.checkforProgramBlocks(System.String)">
+            <summary>
+            This function checks for Program blocks such as If EndIf, Method EndMethod, LoopFor EndLoopFor
+            </summary>
+            <param name="text">A string containing (multiple) lines</param>
+            <returns>True if a programBlock keyword is found. False otherwise.</returns>
+        </member>
+        <member name="M:WpfApplication1.CommandParser.checkforReservedKeywords(System.String)">
+            <summary>
+            This function checks for Reserved keywords used in variable names
+            </summary>
+            <param name="text">A string containing (multiple) lines</param>
+            <returns>True if a reserved keyword is found in the variable names</returns>
+        </member>
+        <member name="M:WpfApplication1.CommandParser.evaluateExpression(System.String)">
+            <summary>
+            This function takea an input string to evaluate as an expression
+            </summary>
+            <param name="eqn">string equation such as "10+5" or "10*2"</param>
+            <returns>Object which can be parsed to Int, Float, etc.</returns>
+        </member>
+        <member name="M:WpfApplication1.CommandParser.singleLineExecutableCommand(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="command"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WpfApplication1.CommandParser.checkCommandContainsVariableName(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="command"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WpfApplication1.CommandParser.setCommandParser(System.String)">
+            <summary>
+            This is command parser set method
+            </summary>
+            <param name="command"></param>
+        </member>
+        <member name="M:WpfApplication1.CommandParser.executeCommand">
+            <summary>
+            This function  excute the valid commad
+            </summary>
+        </member>
+        <member name="M:WpfApplication1.CommandParser.drawRectangle(System.Int32,System.Int32)">
+            <summary>
+            This function draw the rectangle
+            </summary>
+            <param name="width"></param>
+            <param name="height"></param>
+        </member>
+        <member name="M:WpfApplication1.CommandParser.drawCircle(System.Int32)">
+            <summary>
+            This function draw the circle
+            </summary>
+            <param name="radius"></param>
+        </member>
+        <member name="M:WpfApplication1.CommandParser.drawTriangle(System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            This function draw the triangle
+            </summary>
+            <param name="x2"></param>
+            <param name="y2"></param>
+            <param name="x3"></param>
+            <param name="y3"></param>
+        </member>
+        <member name="M:WpfApplication1.CommandParser.drawLine(System.Int32,System.Int32)">
+            <summary>
+            This function draw the line
+            </summary>
+            <param name="x1"></param>
+            <param name="y1"></param>
+        </member>
+        <member name="M:WpfApplication1.CommandParser.checkCommand(System.String)">
+            <summary>
+            This function check the commad is valid or not
+            </summary>
+            <param name="command"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WpfApplication1.CommandParser.commandIsValid(System.String)">
+            <summary>
+            This boolen function for commands are valid or not 
+            </summary>
+            <param name="command"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WpfApplication1.CommandParser.drawMoveTo(System.String[])">
+            <summary>
+            This is moveto function for change the position of pointer
+            </summary>
+            <param name="commands"></param>
+        </member>
+        <member name="M:WpfApplication1.CommandParser.checkmoveto(System.String)">
+            <summary>
+            This function check the moveto command valid or not
+            </summary>
+            <param name="command"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WpfApplication1.CommandParser.inValidCommand(System.String,System.Double,System.Double,System.String)">
+            <summary>
+            If command or params are invalid then this function will execute
+            </summary>
+        </member>
+        <member name="M:WpfApplication1.CommandParser.drawDrawTo(System.String[])">
+            <summary>
+            
+            </summary>
+            <param name="commands"></param>
+        </member>
+        <member name="M:WpfApplication1.CommandParser.checkdrawto(System.String)">
+            <summary>
+            This function check the drawto command valid or not
+            </summary>
+            <param name="command"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WpfApplication1.CommandParser.drawRectangle(System.String[])">
+            <summary>
+            This function draw the rectangle
+            </summary>
+            <param name="commands"></param>
+        </member>
+        <member name="M:WpfApplication1.CommandParser.checkrectangle(System.String)">
+            <summary>
+            This function check the rectangle command valid or not
+            </summary>
+            <param name="command"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WpfApplication1.CommandParser.drawCircle(System.String[])">
+            <summary>
+            This function draw the circle
+            </summary>
+            <param name="commands"></param>
+        </member>
+        <member name="M:WpfApplication1.CommandParser.checkcircle(System.String)">
+            <summary>
+            This function check the circle command valid or not
+            </summary>
+            <param name="command"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WpfApplication1.CommandParser.drawTriangle(System.String[])">
+            <summary>
+            This function for draw triangle
+            </summary>
+            <param name="commands"></param>
+        </member>
+        <member name="M:WpfApplication1.CommandParser.checktriangle(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="command"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WpfApplication1.CommandParser.drawPen(System.String[])">
+            <summary>
+            This function draw the shape by the pen color 
+            </summary>
+            <param name="commands"></param>
+        </member>
+        <member name="M:WpfApplication1.CommandParser.checkpen(System.String)">
+            <summary>
+            This function check the pen command valid or not
+            </summary>
+            <param name="command"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WpfApplication1.CommandParser.drawFill(System.String[])">
+            <summary>
+            
+            </summary>
+            <param name="commands"></param>
+        </member>
+        <member name="M:WpfApplication1.CommandParser.checkfill(System.String)">
+            <summary>
+            This function check the clear command valid or not
+            </summary>
+            <param name="command"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WpfApplication1.CommandParser.checkvar(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="command"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WpfApplication1.CommandParser.drawClear">
+            <summary>
+            This function clear the drawing canavs
+            </summary>
+        </member>
+        <member name="M:WpfApplication1.CommandParser.checkclear(System.String)">
+            <summary>
+            This function check the clear command valid or not
+            </summary>
+            <param name="command"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WpfApplication1.CommandParser.drawReset">
+            <summary>
+            This command reset the position 0
+            </summary>
+        </member>
+        <member name="M:WpfApplication1.CommandParser.checkreset(System.String)">
+            <summary>
+            This function check the Reset command valid or not
+            </summary>
+            <param name="command"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WpfApplication1.CommandParser.commandHasValidArgs(System.String)">
+            <summary>
+            This function check the valid command's Parameter
+            </summary>
+            <param name="command"></param>
+            <returns></returns>
+        </member>
+        <member name="T:WpfApplication1.App">
+            <summary>
+            Interaction logic for App.xaml
+            </summary>
+            <summary>
+            App
+            </summary>
+        </member>
+        <member name="M:WpfApplication1.App.Main">
+            <summary>
+            Application Entry Point.
+            </summary>
+        </member>
+        <member name="T:WpfApplication1.Shape">
+            <summary>
+            The Shape Factory. For shapes such as Point, Line, Polygon, Circle, etc.
+            </summary>
+        </member>
+        <member name="T:WpfApplication1.MainWindow">
+            <summary>
+            Interaction logic for MainWindow.xaml
+            </summary>
+            <summary>
+            MainWindow
+            </summary>
+        </member>
+        <member name="M:WpfApplication1.MainWindow.#ctor">
+            <summary>
+            This is the constructor for the MainWindow Class
+            </summary>
+        </member>
+        <member name="M:WpfApplication1.MainWindow.btnExecute_Click(System.Object,System.Windows.RoutedEventArgs)">
+            <summary>
+            This Button Execute the Single line command
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:WpfApplication1.MainWindow.txtCommand_PreviewKeyDown(System.Object,System.Windows.Input.KeyEventArgs)">
+            <summary>
+            This is single line command
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:WpfApplication1.MainWindow.btnLoad_Click(System.Object,System.Windows.RoutedEventArgs)">
+            <summary>
+            This Button redirect to the saved commad file and select the pervious saved file and 
+            load the previous command 
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:WpfApplication1.MainWindow.btnSave_Click(System.Object,System.Windows.RoutedEventArgs)">
+            <summary>
+            This Button Save the Command
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:WpfApplication1.MainWindow.btnRun_Click(System.Object,System.Windows.RoutedEventArgs)">
+            <summary>
+            This button run the multiline commad
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:WpfApplication1.MainWindow.checkContainsOnlyAlphabets(System.String)">
+            <summary>
+            This function checks that the variable name always starts with an alphabet
+            </summary>
+            <param name="str"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WpfApplication1.MainWindow.Window_Loaded(System.Object,System.Windows.RoutedEventArgs)">
+            <summary>
+            This function will draw a rectangle from a singleton class into the Canvas
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:WpfApplication1.MainWindow.Window_ContentRendered(System.Object,System.EventArgs)">
+            <summary>
+            This method will execute a background thread for the progressbar
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:WpfApplication1.MainWindow.worker_DoWork(System.Object,System.ComponentModel.DoWorkEventArgs)">
+            <summary>
+            This function calculates the value of the progress bar
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:WpfApplication1.MainWindow.worker_ProgressChanged(System.Object,System.ComponentModel.ProgressChangedEventArgs)">
+            <summary>
+            This function takes value from worker and updates the value of progress bar
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:WpfApplication1.MainWindow.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+    </members>
+</doc>
