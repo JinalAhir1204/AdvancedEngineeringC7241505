@@ -6,9 +6,20 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using System.Windows.Controls;
+using System.Data;
 
 namespace WpfApplication1
 {
+    [Serializable]
+    class InvalidCommandException : Exception
+    {
+        public InvalidCommandException() { }
+
+        public InvalidCommandException(string command) : base(String.Format("This is my custom Invalid Command message: {0}", command))
+        {
+
+        }
+    }
     /// <summary>
     /// 
     /// </summary>
@@ -16,13 +27,157 @@ namespace WpfApplication1
     {
         public List<string> programBlocks = new List<string>();
         public Dictionary<string, string> variables_values = new Dictionary<string, string>();
-        String Command = "";
-        int penLocationX = 0;
-        int penLocationY = 0;
-        Color penColor = Colors.Black;
-        bool fill = false;
-        String invalidcommand = "This is invalid command";
-        String invalArg = "This command has invalid parameters";
+        public List<string> reservedKeywords = new List<string>();
+        String Command;
+        int penLocationX;
+        int penLocationY;
+        Color penColor;
+        bool fill;
+        String invalidcommand;
+        String invalArg;
+        public Dictionary<string, string> method_block = new Dictionary<string, string>();//methodname, methodstatements
+        public List<string> singleCommandsList = new List<string>();
+        public List<string> programBlockKeywords = new List<string>();
+
+        /// <summary>
+        /// This is the constructor for the CommandParser Class
+        /// </summary>
+        public CommandParser()
+        {
+            Command = "";
+            penLocationX = 0;
+            penLocationY = 0;
+            penColor = Colors.Black;
+            fill = false;
+            invalidcommand = "This is invalid command";
+            invalArg = "This command has invalid parameters";
+
+            singleCommandsList.Add("moveto ");
+            singleCommandsList.Add("drawto ");
+            singleCommandsList.Add("clear");
+            singleCommandsList.Add("reset");
+            singleCommandsList.Add("rectangle ");
+            singleCommandsList.Add("circle ");
+            singleCommandsList.Add("triangle ");
+            singleCommandsList.Add("pen ");
+            singleCommandsList.Add("fill ");
+            singleCommandsList.Add("Var ");
+
+            programBlockKeywords.Add("While ");
+            programBlockKeywords.Add("EndWhile\n");
+            programBlockKeywords.Add("If ");
+            programBlockKeywords.Add("EndIf\n");
+            programBlockKeywords.Add("Method ");
+            programBlockKeywords.Add("EndMethod\n");
+            programBlockKeywords.Add("LoopFor ");
+            programBlockKeywords.Add("EndLoopFor\n");
+            programBlockKeywords.Add("Var ");
+
+            reservedKeywords.Add("moveto");
+            reservedKeywords.Add("drawto");
+            reservedKeywords.Add("clear");
+            reservedKeywords.Add("reset");
+            reservedKeywords.Add("rectangle");
+            reservedKeywords.Add("circle");
+            reservedKeywords.Add("triangle");
+            reservedKeywords.Add("pen");
+            reservedKeywords.Add("fill");
+            reservedKeywords.Add("While");
+            reservedKeywords.Add("EndWhile");
+            reservedKeywords.Add("If");
+            reservedKeywords.Add("EndIf");
+            reservedKeywords.Add("Method");
+            reservedKeywords.Add("EndMethod");
+            reservedKeywords.Add("LoopFor");
+            reservedKeywords.Add("EndLoopFor");
+            reservedKeywords.Add("Var");
+
+           
+        }
+        /// <summary>
+        /// This function checks for Program blocks such as If EndIf, Method EndMethod, LoopFor EndLoopFor
+        /// </summary>
+        /// <param name="text">A string containing (multiple) lines</param>
+        /// <returns>True if a programBlock keyword is found. False otherwise.</returns>
+        public bool checkforProgramBlocks(string text)
+        {
+            bool retVal = false;
+            foreach (string obj in programBlockKeywords)
+            {
+                if (text.Contains(obj))
+                {
+                    retVal = true;
+                    break;
+                }
+            }
+            return retVal;
+        }
+        /// <summary>
+        /// This function checks for Reserved keywords used in variable names
+        /// </summary>
+        /// <param name="text">A string containing (multiple) lines</param>
+        /// <returns>True if a reserved keyword is found in the variable names</returns>
+        public bool checkforReservedKeywords(string text)
+        {
+            bool retVal = false;
+            foreach (string obj in reservedKeywords)
+            {
+                if (text.Trim().Equals(obj))
+                {
+                    retVal = true;
+                    break;
+                }
+            }
+            return retVal;
+        }
+        /// <summary>
+        /// This function takea an input string to evaluate as an expression
+        /// </summary>
+        /// <param name="eqn">string equation such as "10+5" or "10*2"</param>
+        /// <returns>Object which can be parsed to Int, Float, etc.</returns>
+        public object evaluateExpression(string eqn)
+        {
+            DataTable dt = new DataTable();
+            var result = dt.Compute(eqn, string.Empty);
+            return result;
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="command"></param>
+        /// <returns></returns>
+        public bool singleLineExecutableCommand(string command)
+        {
+            bool retVal = false;
+            foreach (string obj in singleCommandsList.ToArray())
+            {
+                if (command.StartsWith(obj))
+                {
+                    retVal = true;
+                    break;
+                }
+            }
+            return retVal;
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="command"></param>
+        /// <returns></returns>
+        public bool checkCommandContainsVariableName(string command)
+        {
+            bool retVal = false;
+            foreach (KeyValuePair<string, string> obj in variables_values.ToArray())
+            {
+                if (command.Contains(obj.Key))
+                {
+                    retVal = true;
+                }
+            }
+            return retVal;
+
+        }
+
         /// <summary>
         /// This is command parser set method
         /// </summary>
@@ -47,7 +202,18 @@ namespace WpfApplication1
         {
             if (this.Command != "" && this.Command.Trim().Length > 0)
             {
-                string[] commands = this.Command.Split(' ');
+                this.Command=this.Command.Replace("moveto ", "moveto$");
+                this.Command = this.Command.Replace("drawto ", "drawto$");
+                //this.Command=this.Command.Replace("clear");
+                //this.Command=this.Command.Replace("reset");
+                this.Command = this.Command.Replace("rectangle ", "rectangle$");
+                this.Command = this.Command.Replace("circle ", "circle$");
+                this.Command = this.Command.Replace("triangle ", "triangle$");
+                this.Command = this.Command.Replace("pen ", "pen$");
+                this.Command = this.Command.Replace("fill ", "fill$");
+                //this.Command=this.Command.Replace("Var ","Var$");
+
+                string[] commands = this.Command.Split('$');
                 switch (commands[0])
                 {
                     case ("moveto"):
@@ -222,7 +388,15 @@ namespace WpfApplication1
                 }
                 else if (commandIsValid(command) == true && commandHasValidArgs(command) == false)
                 {
-                    inValidCommand(invalArg, 10.00, 30.00, command);
+                    try
+                    {
+
+                        inValidCommand(invalArg, 10.00, 30.00, command);
+                    }
+                    catch (InvalidCommandException ex)
+                    {
+                        MessageBox.Show("Exception: "+ ex);
+                    }
                     return false;
                 }
                 else
@@ -265,9 +439,23 @@ namespace WpfApplication1
             {
                 return true;
             }
-            else
+            else if (command.Contains('='))
             {
-                inValidCommand(invalidcommand, 10.00, 10.00, command);
+                assignVarNameWithItsValueonRHS(command);
+                return true;
+
+            }
+            else {
+               
+               try
+                    {
+
+                        inValidCommand(invalidcommand, 10.00, 30.00, command);
+                    }
+                    catch (InvalidCommandException ex)
+                    {
+                        MessageBox.Show("Exception: "+ ex);
+                    }
                 return false;
             }
 
@@ -278,8 +466,8 @@ namespace WpfApplication1
         /// <param name="commands"></param>
         public void drawMoveTo(string[] commands)
         {
-            int x1 = Int32.Parse(commands[1]);
-            int y1 = Int32.Parse(commands[2]);
+            int x1 = Int32.Parse(evaluateExpression(commands[1]).ToString());
+            int y1 = Int32.Parse(evaluateExpression(commands[2]).ToString());
             this.penLocationX = x1;
             this.penLocationY = y1;
 
@@ -298,7 +486,7 @@ namespace WpfApplication1
                 bool secondArg = false;
                 try
                 {
-                    int m = Int32.Parse(commands[1]);
+                    int m = Int32.Parse(evaluateExpression(commands[1]).ToString());
                     firstArg = true;
                 }
                 catch (FormatException e)
@@ -307,7 +495,7 @@ namespace WpfApplication1
                 }
                 try
                 {
-                    int m = Int32.Parse(commands[2]);
+                    int m = Int32.Parse(evaluateExpression(commands[2]).ToString());
                     secondArg = true;
                 }
                 catch (FormatException e)
@@ -335,6 +523,8 @@ namespace WpfApplication1
         /// </summary>
         public void inValidCommand(String text, double x, double y, string command)
         {
+
+
             TextBlock textBlock = new TextBlock();
             textBlock.Text = text;
             textBlock.Foreground = new SolidColorBrush(Colors.Red);
@@ -348,6 +538,7 @@ namespace WpfApplication1
                     (window as MainWindow).txtOutput.Text = (window as MainWindow).txtOutput.Text + "\n" + command + " Invalid";
                 }
             }
+            throw new InvalidCommandException(command);
         }
 
         /// <summary>
@@ -356,8 +547,8 @@ namespace WpfApplication1
         /// <param name="commands"></param>
         public void drawDrawTo(string[] commands)
         {
-            int x2 = Int32.Parse(commands[1]);
-            int y2 = Int32.Parse(commands[2]);
+            int x2 = Int32.Parse(evaluateExpression(commands[1]).ToString());
+            int y2 = Int32.Parse(evaluateExpression(commands[2]).ToString());
             drawLine(x2, y2);
 
         }
@@ -376,7 +567,7 @@ namespace WpfApplication1
                 bool secondArg = false;
                 try
                 {
-                    int m = Int32.Parse(commands[1]);
+                    int m = Int32.Parse(evaluateExpression(commands[1]).ToString());
                     firstArg = true;
                 }
                 catch (FormatException e)
@@ -385,7 +576,7 @@ namespace WpfApplication1
                 }
                 try
                 {
-                    int m = Int32.Parse(commands[2]);
+                    int m = Int32.Parse(evaluateExpression(commands[2]).ToString());
                     secondArg = true;
                 }
                 catch (FormatException e)
@@ -414,8 +605,8 @@ namespace WpfApplication1
         /// <param name="commands"></param>
         public void drawRectangle(string[] commands)
         {
-            int width = Int32.Parse(commands[1]);
-            int height = Int32.Parse(commands[2]);
+            int width = Int32.Parse(evaluateExpression(commands[1]).ToString());
+            int height = Int32.Parse(evaluateExpression(commands[2]).ToString());
             drawRectangle(width, height);
         }
 
@@ -433,7 +624,7 @@ namespace WpfApplication1
                 bool secondArg = false;//height
                 try
                 {
-                    int m = Int32.Parse(commands[1]);
+                    int m = Int32.Parse(evaluateExpression(commands[1]).ToString());
                     firstArg = true;
                 }
                 catch (FormatException e)
@@ -442,7 +633,7 @@ namespace WpfApplication1
                 }
                 try
                 {
-                    int m = Int32.Parse(commands[2]);
+                    int m = Int32.Parse(evaluateExpression(commands[2]).ToString());
                     secondArg = true;
                 }
                 catch (FormatException e)
@@ -464,14 +655,53 @@ namespace WpfApplication1
                 return false;
             }
         }
+        public string replaceVarNameWithItsValueInCommand(string command)
+        {
+            if (command.Contains('=') && !command.Contains("=="))
+            {
+                return assignVarNameWithItsValueonRHS(command);
+            }
+            else
+            {
+                foreach (KeyValuePair<string, string> obj in variables_values.ToArray())
+                {
+                    if (command.Contains(obj.Key))//contains is a bug here because reservedKeywords can be substrings of varNames (obj.Key) 
+                    {
+                        command = command.Replace(obj.Key, obj.Value);
+                    }
+                }
+                return command;
+            }
+        }
+        public string assignVarNameWithItsValueonRHS(string command)
+        {
+            string[] left_right = command.Split('=');
+            string left = left_right[0].Trim();
+            string right = left_right[1].Trim();
+            int value = 0;
+            foreach (KeyValuePair<string, string> obj in variables_values.ToArray())
+            {
+                if (right.Contains(obj.Key))//contains is a bug here because reservedKeywords can be substrings of varNames (obj.Key) 
+                {
+                    string cmd = replaceVarNameWithItsValueInCommand(right);
+                    value = (int)evaluateExpression(cmd);
+                    variables_values[obj.Key] = value.ToString();
+                }
+                else {
+                    value = (int)evaluateExpression(right);
 
+                }
+            }
+            return left + "=" + value;
+
+        }
         /// <summary>
         /// This function draw the circle
         /// </summary>
         /// <param name="commands"></param>
         public void drawCircle(string[] commands)
         {
-            int m = Int32.Parse(commands[1]);
+            int m = Int32.Parse(evaluateExpression(commands[1]).ToString());
             drawCircle(m);
         }
         /// <summary>
@@ -481,13 +711,14 @@ namespace WpfApplication1
         /// <returns></returns>
         public bool checkcircle(String command)
         {
-            string[] commands = command.Split(' ');
-            if (commands[0].Contains("circle") && (commands.Length == 2))
+            string[] commands = command.Replace("circle ","circle$").Split('$');
+            if (commands[0].Equals("circle") && (commands.Length == 2))
             {
                 bool firstArg = false;
                 try
                 {
-                    int m = Int32.Parse(commands[1]);
+
+                    int m = Int32.Parse(evaluateExpression(replaceVarNameWithItsValueInCommand(commands[1])).ToString());
                     firstArg = true;
                 }
                 catch (FormatException e)
@@ -516,10 +747,10 @@ namespace WpfApplication1
         /// <param name="commands"></param>
         public void drawTriangle(string[] commands)
         {
-            int x2 = Int32.Parse(commands[1]);
-            int y2 = Int32.Parse(commands[2]);
-            int x3 = Int32.Parse(commands[3]);
-            int y3 = Int32.Parse(commands[4]);
+            int x2 = Int32.Parse(evaluateExpression(replaceVarNameWithItsValueInCommand(commands[1])).ToString());
+            int y2 = Int32.Parse(evaluateExpression(replaceVarNameWithItsValueInCommand(commands[2])).ToString());
+            int x3 = Int32.Parse(evaluateExpression(replaceVarNameWithItsValueInCommand(commands[3])).ToString());
+            int y3 = Int32.Parse(evaluateExpression(replaceVarNameWithItsValueInCommand(commands[4])).ToString());
             drawTriangle(x2, y2, x3, y3);
         }
         /// <summary>
@@ -539,7 +770,7 @@ namespace WpfApplication1
 
                 try
                 {
-                    int m = Int32.Parse(commands[1]);
+                    int m = Int32.Parse(evaluateExpression(replaceVarNameWithItsValueInCommand(commands[1])).ToString());
                     firstArg = true;
                 }
                 catch (FormatException e)
@@ -548,7 +779,7 @@ namespace WpfApplication1
                 }
                 try
                 {
-                    int m = Int32.Parse(commands[2]);
+                    int m = Int32.Parse(evaluateExpression(replaceVarNameWithItsValueInCommand(commands[2])).ToString());
                     secondArg = true;
                 }
                 catch (FormatException e)
@@ -557,7 +788,7 @@ namespace WpfApplication1
                 }
                 try
                 {
-                    int m = Int32.Parse(commands[3]);
+                    int m = Int32.Parse(evaluateExpression(replaceVarNameWithItsValueInCommand(commands[3])).ToString());
                     thirdArg = true;
                 }
                 catch (FormatException e)
@@ -566,7 +797,7 @@ namespace WpfApplication1
                 }
                 try
                 {
-                    int m = Int32.Parse(commands[4]);
+                    int m = Int32.Parse(evaluateExpression(replaceVarNameWithItsValueInCommand(commands[4])).ToString());
                     fourthArg = true;
                 }
                 catch (FormatException e)
@@ -722,10 +953,18 @@ namespace WpfApplication1
             {
                 string[] varVal = commands[1].Split('=');
                 string varName = varVal[0];
-                string varValue = varVal[1];
+                string varValue = evaluateExpression(replaceVarNameWithItsValueInCommand(varVal[1])).ToString(); 
                 try
                 {
-                    variables_values.Add(varName, varValue);
+                    if (variables_values.ContainsKey(varName))
+                    {
+                        variables_values[varName] = varValue;
+                    }
+                    else
+                    {
+                        variables_values.Add(varName, varValue);
+                    }
+
                     return true;
                 }
                 catch (Exception e)
@@ -844,6 +1083,11 @@ namespace WpfApplication1
             else if (command.StartsWith("Var "))
             {
                 return checkvar(command);
+            }
+            else if (command.Contains("="))
+            {
+                assignVarNameWithItsValueonRHS(command);
+                return true;//checkvarAssignment(command);->this function is yet to be implemented
             }
             else
             {

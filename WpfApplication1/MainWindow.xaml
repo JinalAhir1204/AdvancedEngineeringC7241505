@@ -1,7 +1,7 @@
 ﻿<Window x:Class="WpfApplication1.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="800" Width="700" Loaded="Window_Loaded">
+        Title="MainWindow" Height="800" Width="700" Loaded="Window_Loaded" ContentRendered="Window_ContentRendered">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="392*" />
@@ -25,5 +25,7 @@
         <Label Content="Output" Height="28" HorizontalAlignment="Left" Margin="17,492,0,0" Name="lblOutput" VerticalAlignment="Top" Width="93" />
         <Button Content="Run" Height="23" HorizontalAlignment="Left" Margin="599,35,0,0" Name="btnRun" VerticalAlignment="Top" Width="66" Click="btnRun_Click" />
         <Button Content="Check Syntax" Height="23" HorizontalAlignment="Left" Margin="519,35,0,0" Name="btnCheckSyntax" VerticalAlignment="Top" Width="74" Click="btnCheckSyntax_Click" />
+        <ProgressBar Height="35" HorizontalAlignment="Left" Margin="504,442,0,0" Minimum="0" Maximum="100" Value="0" Name="pbStatus" IsIndeterminate="True" VerticalAlignment="Top" Width="161" />
+        <TextBlock Height="35" Margin="572,447,51,102" Width="55" FontSize="20" Text="{Binding ElementName=pbStatus, Path=Value, StringFormat={}{0:0}%}" HorizontalAlignment="Center" VerticalAlignment="Center" Name="pbText"/>
     </Grid>
 </Window>

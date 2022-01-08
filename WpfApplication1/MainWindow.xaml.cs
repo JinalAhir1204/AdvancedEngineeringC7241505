@@ -15,6 +15,8 @@ using System.IO;
 using Microsoft.Win32;
 using System.Text.RegularExpressions;
 using System.Data;
+using System.Threading;
+using System.ComponentModel;
 
 
 namespace WpfApplication1
@@ -26,49 +28,23 @@ namespace WpfApplication1
     {
         CommandParser cmdParser = new CommandParser();
         //public List<string> programBlocks = new List<string>();
-        public Dictionary<string, string> method_block = new Dictionary<string, string>();//methodname, methodstatements
-        public List<string> singleCommandsList = new List<string>();
-        public List<string> reservedKeywords = new List<string>();
-        public List<string> programBlockKeywords = new List<string>();
+        TextBlock textBlock = new TextBlock();
+            
+
         public string whileCondition = "";
+        /// <summary>
+        /// This is the constructor for the MainWindow Class
+        /// </summary>
         public MainWindow()
         {
             InitializeComponent();
+            textBlock.Text = "A singleton object draws rectangle on the canvas\nIt will be cleared after loading is complete";
+            textBlock.FontSize = 15;
+            //textBlock.Foreground = new SolidColorBrush(Colors.Red);
+            Canvas.SetLeft(textBlock, 25);
+            Canvas.SetTop(textBlock, 25);
+            this.myCanvas.Children.Add(textBlock);
             txtCommand.Focus();
-            singleCommandsList.Add("moveto ");
-            singleCommandsList.Add("drawto ");
-            singleCommandsList.Add("clear");
-            singleCommandsList.Add("reset");
-            singleCommandsList.Add("rectangle ");
-            singleCommandsList.Add("circle ");
-            singleCommandsList.Add("triangle ");
-            singleCommandsList.Add("pen ");
-            singleCommandsList.Add("fill ");
-
-            programBlockKeywords.Add("While ");
-            programBlockKeywords.Add("EndWhile\n");
-            programBlockKeywords.Add("If ");
-            programBlockKeywords.Add("EndIf\n");
-            programBlockKeywords.Add("Method ");
-            programBlockKeywords.Add("EndMethod\n");
-            programBlockKeywords.Add("Var ");
-
-            reservedKeywords.Add("moveto");
-            reservedKeywords.Add("drawto");
-            reservedKeywords.Add("clear");
-            reservedKeywords.Add("reset");
-            reservedKeywords.Add("rectangle");
-            reservedKeywords.Add("circle");
-            reservedKeywords.Add("triangle");
-            reservedKeywords.Add("pen");
-            reservedKeywords.Add("fill");
-            reservedKeywords.Add("While");
-            reservedKeywords.Add("EndWhile");
-            reservedKeywords.Add("If");
-            reservedKeywords.Add("EndIf");
-            reservedKeywords.Add("Method");
-            reservedKeywords.Add("EndMethod");
-            reservedKeywords.Add("Var");
         }
         /// <summary>
         /// This Button Execute the Single line command
@@ -151,33 +127,7 @@ namespace WpfApplication1
             File.WriteAllText(filepath, txtProgram.Text);
         }
 
-        private bool checkforProgramBlocks(string text)
-        {
-            bool retVal = false;
-            foreach (string obj in programBlockKeywords)
-            {
-                if (text.Contains(obj))
-                {
-                    retVal = true;
-                    break;
-                }
-            }
-            return retVal;
-        }
 
-        private bool checkforReservedKeywords(string text)
-        {
-            bool retVal = false;
-            foreach (string obj in reservedKeywords)
-            {
-                if (text.Trim().Equals(obj))
-                {
-                    retVal = true;
-                    break;
-                }
-            }
-            return retVal;
-        }
 
         /// <summary>
         /// This button run the multiline commad
@@ -186,7 +136,7 @@ namespace WpfApplication1
         /// <param name="e"></param>
         private void btnRun_Click(object sender, RoutedEventArgs e)
         {
-            if (checkforProgramBlocks(txtProgram.Text))
+            if (cmdParser.checkforProgramBlocks(txtProgram.Text))
             {
                 //from the program we first divide the program into appropriate code blocks... if endif, while endwhile, method endmethod
                 //moveto
@@ -259,7 +209,21 @@ namespace WpfApplication1
                         }
                         continue;
                     }
-                    else if (lines[i].StartsWith("Var ") || singleLineExecutableCommand(lines[i]))
+                    else if (lines[i].StartsWith("LoopFor "))//method name
+                    {
+                        //code block finishes at EndWhile
+                        for (int j = i; j < lines.Length; j++, i++)
+                        {
+                            codeblock = codeblock + lines[i];
+                            if (lines[i].Trim().Equals("EndLoopFor"))
+                            {
+                                cmdParser.programBlocks.Add(codeblock.Trim());
+                                break;
+                            }
+                        }
+                        continue;
+                    }
+                    else if (lines[i].StartsWith("Var ") || cmdParser.singleLineExecutableCommand(lines[i]))
                     {
                         //code block finishes at end of line
                         string command = lines[i].Trim();
@@ -270,19 +234,20 @@ namespace WpfApplication1
                         {
                             command = command.Replace("Var ", "Var$");
                             string[] commands = command.Split('$');//$ is set as separator to distinguish it from space as a separator
-                            if (commands[0].Contains("Var") && (commands.Length == 2))
+                            if (commands[0].Trim().Equals("Var") && (commands.Length == 2))
                             {
-                                string[] varVal = commands[1].Split('=');
+                                string[] varVal = commands[1].Trim().Split('=');
                                 string varName = varVal[0].Trim();
                                 //variable name should always start with an alphabet
-                                if (varName.Length < 10)
-                                {
-                                    txtOutput.Text = txtOutput.Text + "\n" + "Variable name should be >= 10 characters in length." + "\n";
-                                }
-                                else if (checkContainsOnlyAlphabets(varName) && varName.Length >= 10)
+                                //if (varName.Length < 10)
+                                //{
+                                 //   txtOutput.Text = txtOutput.Text + "\n" + "Variable name should be >= 10 characters in length." + "\n";
+                                //}
+                                //else
+                                if (checkContainsOnlyAlphabets(varName))//&& varName.Length >= 10)
                                 {
                                     //check that varName is not one of the reserved keywords
-                                    if (!checkforReservedKeywords(varName))//Not a reserved keyword//This is now useless as varName.Length >=10
+                                    if (!cmdParser.checkforReservedKeywords(varName))//Not a reserved keyword//This is now useless as varName.Length >=10
                                     {
                                         string varValue = varVal[1].Trim();
                                         try
@@ -307,7 +272,7 @@ namespace WpfApplication1
                     else
                     {
                         //check if this statement is a Method call
-                        foreach (KeyValuePair<string, string> method in method_block.ToArray())
+                        foreach (KeyValuePair<string, string> method in cmdParser.method_block.ToArray())
                         {
                             if (lines[i].Trim().Equals(method.Key + "()"))
                             {
@@ -325,32 +290,36 @@ namespace WpfApplication1
 
                 foreach (string obj in cmdParser.programBlocks.ToArray())
                 {
-                    string command = obj.Trim();
-                    if (singleLineExecutableCommand(command))
+                    string commandblock = obj.Trim();
+                    if (cmdParser.singleLineExecutableCommand(commandblock))
                     {
                         //we check if this single line command contains argument, if so the argName will be replaced by its value
-                        command = replaceVarNameWithItsValueInCommand(command);
-                        cmdParser.setCommandParser(command);
+                        commandblock = cmdParser.replaceVarNameWithItsValueInCommand(commandblock);
+                        cmdParser.setCommandParser(commandblock);
                         cmdParser.executeCommand();
                     }
                     else//this is either programBlock (or a variable)
                     {
-                        if (command.StartsWith("Var "))
+                        if (commandblock.StartsWith("Var "))
                         {//this is a variable and we have already added variables to variable_values
                         }
                         else
                         {
-                            if (command.StartsWith("If "))
+                            if (commandblock.StartsWith("If "))
                             {
-                                executeIfBlock(command);
+                                executeIfBlock(commandblock);
                             }
-                            else if (command.StartsWith("While "))
+                            else if (commandblock.StartsWith("While "))
                             {
-                                whileCondition = command.Split('\r')[0].Trim().Replace("While ", "");
+                                whileCondition = commandblock.Split('\r')[0].Trim().Replace("While ", "");
 
-                                executeWhileBlock(command);
+                                executeWhileBlock(commandblock);
                             }
-                            else if (command.StartsWith("Method "))
+                            else if (commandblock.StartsWith("LoopFor "))
+                            {
+                                executeForLoopBlock(commandblock);
+                            }
+                            else if (commandblock.StartsWith("Method "))
                             {
 
                             }
@@ -385,12 +354,7 @@ namespace WpfApplication1
             }
         }
 
-        private object evaluateExpression(string eqn)
-        {
-            DataTable dt = new DataTable();
-            var result = dt.Compute(eqn, string.Empty);
-            return result;
-        }
+
 
         public void executeIfBlock(string block)
         {
@@ -399,21 +363,21 @@ namespace WpfApplication1
 
             //we extract and test the condition
             string condition = lines[0].Replace("If ", "").Trim();
-            condition = replaceVarNameWithItsValueInCommand(condition).Trim();
+            condition = cmdParser.replaceVarNameWithItsValueInCommand(condition).Trim();
 
             //we take into consideration the following conditions
 
             if (condition.Contains("=="))//==
             {
                 string[] left_right = condition.Replace("==", "=").Split('=');
-                var left = evaluateExpression(left_right[0].Trim());
-                var right = evaluateExpression(left_right[1].Trim());
+                var left = cmdParser.evaluateExpression(left_right[0].Trim());
+                var right = cmdParser.evaluateExpression(left_right[1].Trim());
                 if (left.Equals(right))
                 {
                     for (int i = 1; i < lines.Length; i++)
                     {
 
-                        string command = replaceVarNameWithItsValueInCommand(lines[i].Trim());
+                        string command = cmdParser.replaceVarNameWithItsValueInCommand(lines[i].Trim());
                         if (command.Equals("EndIf"))
                         {
                             break;
@@ -430,13 +394,13 @@ namespace WpfApplication1
             else if (condition.Contains("!="))//!=
             {
                 string[] left_right = condition.Replace("!=", "!").Split('!');
-                var left = evaluateExpression(left_right[0].Trim());
-                var right = evaluateExpression(left_right[1].Trim());
+                var left = cmdParser.evaluateExpression(left_right[0].Trim());
+                var right = cmdParser.evaluateExpression(left_right[1].Trim());
                 if (!left.Equals(right))
                 {
                     for (int i = 1; i < lines.Length; i++)
                     {
-                        string command = replaceVarNameWithItsValueInCommand(lines[i].Trim());
+                        string command = cmdParser.replaceVarNameWithItsValueInCommand(lines[i].Trim());
                         cmdParser.setCommandParser(command);
                         cmdParser.executeCommand();
                         txtOutput.Text = txtOutput.Text + "\n" + command;
@@ -448,6 +412,7 @@ namespace WpfApplication1
                 txtOutput.Text = txtOutput.Text + "\n" + "only == and != are supported." + "\n";
             }
         }
+
         public void executeWhileBlock(string block)
         {
             //while has a condition after the keyword
@@ -455,18 +420,18 @@ namespace WpfApplication1
 
             //we extract and test the condition
             string condition = lines[0].Replace("While ", "").Trim();
-            condition = replaceVarNameWithItsValueInCommand(condition).Trim();
+            condition = cmdParser.replaceVarNameWithItsValueInCommand(condition).Trim();
             //we take into consideration the following conditions
             if (condition.Contains(">"))//==
             {
                 string[] left_right = condition.Split('>');
-                int left = (int)evaluateExpression(left_right[0].Trim());
-                int right = (int)evaluateExpression(left_right[1].Trim());
+                int left = (int)cmdParser.evaluateExpression(left_right[0].Trim());
+                int right = (int)cmdParser.evaluateExpression(left_right[1].Trim());
                 while (left > right)
                 {
                     for (int i = 1; i < lines.Length; i++)
                     {
-                        string command = replaceVarNameWithItsValueInCommand(lines[i].Trim());
+                        string command = cmdParser.replaceVarNameWithItsValueInCommand(lines[i].Trim());
 
                         if (command.Equals("EndWhile"))
                         {
@@ -492,6 +457,62 @@ namespace WpfApplication1
 
             }
         }
+
+        public void executeForLoopBlock(string block)
+        {
+            //while has a condition after the keyword
+            string[] lines = block.Split('\r');
+
+            //we extract the number of times to loop
+            string condition = lines[0].Replace("LoopFor ", "").Trim();
+            condition = cmdParser.replaceVarNameWithItsValueInCommand(condition).Trim();
+             //we take into consideration the following conditions
+
+            int value = 0;
+            int i=1;
+            if (int.TryParse(condition, out value))
+            {
+                if (value > 0)
+                {
+                    
+                      for (int j = 0; j < value; j++)
+                        {
+                            string command = cmdParser.replaceVarNameWithItsValueInCommand(lines[i].Trim()).Trim();
+                            if (command.Equals("EndLoopFor"))
+                            {
+                                continue;
+
+                            }
+                            else
+                            {
+                                for (int k = 1; k < lines.Length-1; k++)
+                                {
+                                    command = cmdParser.replaceVarNameWithItsValueInCommand(lines[k].Trim()).Trim();
+                                    if (command.Equals("EndLoopFor"))
+                                    {
+                                        break;
+
+                                    }
+                                    else
+                                    {
+                                        command = cmdParser.replaceVarNameWithItsValueInCommand(lines[k].Trim()).Trim();
+                                        cmdParser.setCommandParser(command);
+                                        cmdParser.executeCommand();
+                                        txtOutput.Text = txtOutput.Text + "\n" + command;
+                                    }
+                                }
+                            }
+                        }
+                    
+                }
+            }
+            else
+            {
+                // condition is not an int
+            }
+           
+        }
+
         public void addMethodBlock(string block)
         {
             string[] lines = block.Split('\r');
@@ -504,11 +525,15 @@ namespace WpfApplication1
                 { break; }
                 statements = statements + lines[i] + "\r\n";
             }
-            method_block.Add(methodName, statements);
+            cmdParser.method_block.Add(methodName, statements);
 
 
         }
-
+        /// <summary>
+        /// This function checks that the variable name always starts with an alphabet
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
         private static bool checkContainsOnlyAlphabets(string str)
         {
 
@@ -523,68 +548,8 @@ namespace WpfApplication1
                 return false;
             }
         }
-        private string replaceVarNameWithItsValueInCommand(string command)
-        {
-            if (command.Contains('=') && !command.Contains("=="))
-            {
-                return assignVarNameWithItsValueonRHS(command);
-            }
-            else
-            {
-                foreach (KeyValuePair<string, string> obj in cmdParser.variables_values.ToArray())
-                {
-                    if (command.Contains(obj.Key))//contains is a bug here because reservedKeywords can be substrings of varNames (obj.Key) 
-                    {
-                        command = command.Replace(obj.Key, obj.Value);
-                    }
-                }
-                return command;
-            }
-        }
-        private string assignVarNameWithItsValueonRHS(string command)
-        {
-            string[] left_right = command.Split('=');
-            string left = left_right[0].Trim();
-            string right = left_right[1].Trim();
-            int value = 0;
-            foreach (KeyValuePair<string, string> obj in cmdParser.variables_values.ToArray())
-            {
-                if (right.Contains(obj.Key))//contains is a bug here because reservedKeywords can be substrings of varNames (obj.Key) 
-                {
-                    string cmd = replaceVarNameWithItsValueInCommand(right);
-                    value = (int)evaluateExpression(cmd);
-                    cmdParser.variables_values[obj.Key] = value.ToString();
-                }
-            }
-            return left + "=" + value;
+        
 
-        }
-        private bool singleLineExecutableCommand(string command)
-        {
-            bool retVal = false;
-            foreach (string obj in singleCommandsList.ToArray())
-            {
-                if (command.StartsWith(obj))
-                {
-                    retVal = true;
-                    break;
-                }
-            }
-            return retVal;
-        }
-        private bool checkCommandContainsVariableName(string command)
-        {
-            bool retVal = false;
-            foreach (KeyValuePair<string, string> obj in cmdParser.variables_values.ToArray())
-            {
-                if (command.Contains(obj.Key))
-                {
-                    retVal = true;
-                }
-            }
-            return retVal;
-
-        }
         private void btnCheckSyntax_Click(object sender, RoutedEventArgs e)
         {
             txtOutput.Text = txtOutput.Text + "No of Program Blocks = " + cmdParser.programBlocks.Count + ". Program Blocks Started" + "\n";
@@ -603,6 +568,11 @@ namespace WpfApplication1
 
         }
 
+        /// <summary>
+        /// This function will draw a rectangle from a singleton class into the Canvas
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             SingletonRectangle rectangle = SingletonRectangle.GetInstance;//No instance for this class has to be created.
@@ -621,6 +591,96 @@ namespace WpfApplication1
             Canvas.SetTop(rect, rectangle.penLocationY);
             this.myCanvas.Children.Add(rect);
 
+        }
+        /// <summary>
+        /// This method will execute a background thread for the progressbar
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Window_ContentRendered(object sender, EventArgs e)
+        {
+            BackgroundWorker worker = new BackgroundWorker();
+            worker.WorkerReportsProgress = true;
+            worker.DoWork += worker_DoWork;
+            worker.ProgressChanged += worker_ProgressChanged;
+
+            worker.RunWorkerAsync();
+        }
+        /// <summary>
+        /// This function calculates the value of the progress bar
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        void worker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            for (int i = 0; i < 100; i++)
+            {
+                (sender as BackgroundWorker).ReportProgress(i);
+                Thread.Sleep(100);
+
+            }
+        }
+        /// <summary>
+        /// This function takes value from worker and updates the value of progress bar
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        void worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            
+            
+            pbStatus.Value = e.ProgressPercentage;
+            switch ((int)pbStatus.Value)
+            {
+                case 10:
+                    pbStatus.Foreground = System.Windows.Media.Brushes.Red;
+                    textBlock.Foreground = System.Windows.Media.Brushes.Red;
+                    break;
+                case 20:
+                    pbStatus.Foreground = System.Windows.Media.Brushes.Green;
+                    textBlock.Foreground = System.Windows.Media.Brushes.Green;
+                    break;
+                case 30:
+                    pbStatus.Foreground = System.Windows.Media.Brushes.Blue;
+                    textBlock.Foreground = System.Windows.Media.Brushes.Blue;
+                    break;
+                case 40:
+                    pbStatus.Foreground = System.Windows.Media.Brushes.Yellow;
+                    textBlock.Foreground = System.Windows.Media.Brushes.Yellow;
+                    break;
+                case 50:
+                    pbStatus.Foreground = System.Windows.Media.Brushes.Black;
+                    textBlock.Foreground = System.Windows.Media.Brushes.Black;
+                    break;
+                case 60:
+                    pbStatus.Foreground = System.Windows.Media.Brushes.White;
+                    textBlock.Foreground = System.Windows.Media.Brushes.White;
+                    break;
+                case 70:
+                    pbStatus.Foreground = System.Windows.Media.Brushes.Red;
+                    textBlock.Foreground = System.Windows.Media.Brushes.Red;
+                    break;
+                case 80:
+                    pbStatus.Foreground = System.Windows.Media.Brushes.Green;
+                    textBlock.Foreground = System.Windows.Media.Brushes.Green;
+                    break;
+                case 90:
+                    pbStatus.Foreground = System.Windows.Media.Brushes.Orange;
+                    textBlock.Foreground = System.Windows.Media.Brushes.Orange;
+                    break;
+                case 99:
+                    pbText.FontSize = 15;
+                    pbText.Text = "Loaded";
+                    pbStatus.IsIndeterminate = false;
+                    this.myCanvas.Children.Clear();//Here we remove the singleton object from canvas
+                    textBlock.Text = "";
+                    break;
+                case 100:
+                    pbStatus.Foreground = System.Windows.Media.Brushes.Yellow;
+                    break;
+
+
+            }
         }
     }
 
