@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -137,9 +137,16 @@ namespace WpfApplication1
         /// <returns>Object which can be parsed to Int, Float, etc.</returns>
         public object evaluateExpression(string eqn)
         {
-            DataTable dt = new DataTable();
-            var result = dt.Compute(eqn, string.Empty);
-            return result;
+            try
+            {
+                DataTable dt = new DataTable();
+                var result = dt.Compute(eqn, string.Empty);
+                return result;
+            }catch(Exception ex)
+            {
+                return eqn;
+            }
+           
         }
         /// <summary>
         /// 
